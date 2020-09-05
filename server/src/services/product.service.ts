@@ -18,7 +18,7 @@ export const GetProduct = (id: any) => {
     console.log("data inside service");
     console.log("");
 
-    let data = GetProductModel("p101");
+    let data = GetProductModel(id);
     console.log(GetProductModel(data));
     return data;
   } catch (e) {
