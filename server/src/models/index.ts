@@ -22,16 +22,17 @@ export const sequelize = new Sequelize(
     },
   }
 );
+//force:false
 sequelize.sync({ force: false }).then(() => {
   console.log(`Database & tables created here!`);
 });
 export const Category = CategoryModel(sequelize);
 export const Role = RoleModel(sequelize);
-export const Users = UsersModel(sequelize);
-export const Product = ProductModel(sequelize);
+export const User = UsersModel(sequelize, Sequelize);
+export const Product = ProductModel(sequelize, Sequelize);
 export const Supplier = SupplierModel(sequelize, Sequelize);
-Role.hasMany(Users);
-Users.belongsTo(Role);
+Role.hasMany(User);
+User.belongsTo(Role);
 
 Supplier.hasMany(Product);
 Product.belongsTo(Supplier);

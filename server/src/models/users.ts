@@ -1,15 +1,28 @@
 import { DataTypes } from "sequelize";
 
-export const UsersModel = (sequelize: any) => {
+export const UsersModel = (sequelize: any, Sequelize: any) => {
   const Users = sequelize.define("users", {
     userId: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+
       primaryKey: true,
     },
+    roleRoleId: {
+      type: DataTypes.INTEGER,
+    },
 
-    categoryName: {
-      type: DataTypes.STRING(6),
+    name: {
+      type: DataTypes.STRING(20),
+    },
+    email: {
+      type: DataTypes.STRING(30),
+    },
+    password: {
+      type: DataTypes.STRING(20),
+    },
+
+    isStatus: {
+      type: DataTypes.STRING(10),
     },
   });
 

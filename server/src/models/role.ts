@@ -1,23 +1,17 @@
 import { DataTypes } from "sequelize";
-import { Users } from "./index";
+import { User } from "./index";
 
 export const RoleModel = (sequelize: any) => {
-  const Role = sequelize.define(
-    "role",
-    {
-      roleId: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-      },
-
-      roleName: {
-        type: DataTypes.STRING(11),
-      },
+  const Role = sequelize.define("role", {
+    roleId: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
     },
-    {
-      timestamps: false,
-    }
-  );
+
+    roleName: {
+      type: DataTypes.STRING(11),
+    },
+  });
 
   return Role;
 };

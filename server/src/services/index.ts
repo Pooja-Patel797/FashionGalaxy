@@ -1,4 +1,13 @@
 import { addRole } from "./role";
+import { addProduct, getAllProducts, getProductById } from "./product";
+import {
+  addUser,
+  getAllUser,
+  deleteUser,
+  updateUser,
+  getUserById,
+} from "./user";
 
-//export const addRole;
 export { addRole };
+export { addProduct, getAllProducts, getProductById };
+export { addUser, getAllUser, deleteUser, updateUser, getUserById };

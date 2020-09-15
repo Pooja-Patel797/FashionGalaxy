@@ -11,3 +11,5 @@ export const dbConfig = {
     idle: 10000,
   },
 };
+
+// //mongodb+srv://<username>:<password>@cluster0.w6npf.mongodb.net/<dbname>?retryWrites=true&w=majority

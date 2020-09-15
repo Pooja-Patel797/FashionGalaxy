@@ -1,5 +1,6 @@
 import React from "react";
-import { SignIn } from "./components/SignInOrSignUp";
+import { SignIn } from "./components/account/SignIn";
+import { Register } from "./components/account/Register";
 import { Cart } from "./components/Cart";
 import { ProductDetails } from "./components/ProductDetails";
 import { Home } from "./components/Home";
@@ -15,6 +16,7 @@ export const RouteComponent = () => {
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/SignIn" exact component={SignIn} />
+            <Route path="/Register" exact component={Register} />
             <Route path="/Cart" exact component={Cart} />
             <Route path="/ProductDetail/:id" exact component={ProductDetails} />
           </Switch>

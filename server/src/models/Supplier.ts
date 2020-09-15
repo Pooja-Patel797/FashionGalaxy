@@ -2,9 +2,8 @@ import { DataTypes, DATEONLY } from "sequelize";
 
 export const SupplierModel = (sequelize: any, Sequelize: any) => {
   const Supplier = sequelize.define("suppliers", {
-    SupplierId: {
+    supplierId: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
 
