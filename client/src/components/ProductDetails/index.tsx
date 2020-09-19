@@ -4,36 +4,45 @@ import { Link } from "react-router-dom";
 import { ProductSizes } from "../Home/ProductSize";
 import { useStyles } from "./style";
 import { StarRating } from "../Home/StarRating";
-import { CartContext } from "../../context-api/CartProvider";
 import { ProductDetailList } from "../../common/ProductDetailList";
 import { RouteComponentProps } from "react-router-dom";
+import { StateContext } from "../../StateProvider/StateProvider";
+import { useHistory } from "react-router-dom";
 
 type TParams = { id: any };
 
 export const ProductDetails = ({ match }: RouteComponentProps<TParams>) => {
+  const [state, dispatch] = useContext(StateContext);
+  const history = useHistory();
   useEffect(() => {
     window.scrollTo(0, 0);
   });
-  const context = useContext(CartContext);
-  const cart = context.cart;
-  let setCart = context.setcart;
 
   let addToCart = (id: number) => {
-    setCart([...cart, id]);
+    if (state.user !== null) {
+      dispatch({
+        type: "ADD_TO_CART",
+        item: id,
+      });
+    } else {
+      history.push("/SignIn");
+    }
   };
 
   const classes = useStyles();
   const productId = match.params.id;
   const product = ProductDetailList[productId - 1];
   return (
-    <Container>
-      {console.log(match)}
-      {console.log(product.pid)}
+    <Container className={classes.container}>
       <Box className={classes.grid}>
-        <Box className="classes.imageWrapper">
-          <Link to="">
-            <img src={product.img_url} alt={product.product_name} />
-          </Link>
+        <Box className={classes.imageWrapper}>
+          {product.img_url.map((url: any) => (
+            <Box>
+              <Link to="">
+                <img className={classes.productImage} src={url} alt={url} />
+              </Link>
+            </Box>
+          ))}
         </Box>
         <Box className={classes.productDetailsWrapper}>
           <Box className={classes.productDetailsBox}>

@@ -1,26 +1,33 @@
 import React, { useContext } from "react";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { BrowserRouter as Router, Link } from "react-router-dom";
-import { AppBar } from "@material-ui/core";
-import Box from "@material-ui/core/Box";
+import { CssBaseline, AppBar, Box, InputBase } from "@material-ui/core";
+import { Link } from "react-router-dom";
 import SearchIcon from "@material-ui/icons/Search";
-import InputBase from "@material-ui/core/InputBase";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { useStyles } from "./style";
-import { RouteComponent } from "../../RouteComponent";
-import { CartContext } from "../../context-api/CartProvider";
+import { StateContext } from "../../StateProvider/StateProvider";
 
 export const Header = () => {
+  console.log("In header");
+
+  const [state, dispatch] = useContext(StateContext);
+
   const classes = useStyles();
-  const context = useContext(CartContext);
-  const cart = context.cart;
-  const setCart = context.setcart;
 
   const getCartlength = () => {
-    if (cart == null) return " ";
-    else return cart.length;
+    return state.cart.length;
+  };
+  const getUserName = () => {
+    if (state.user != null) {
+      console.log("inside getusername if");
+
+      return "hello " + state.user.username;
+    } else {
+      console.log("inside getusername else");
+
+      return "hello guest!!";
+    }
   };
 
   return (
@@ -59,22 +66,30 @@ export const Header = () => {
               </div>
             </div>
 
-            <Link className={classes.link} to="/SignIn">
-              <AccountCircleIcon fontSize="large" />
-            </Link>
+            <Box className={classes.profile}>
+              <Box className={classes.link}>
+                <Link to="/SignIn">
+                  <AccountCircleIcon fontSize="default" />
+                </Link>
+              </Box>
+              <Box className={classes.username}>
+                {" "}
+                <strong>{getUserName()} </strong>
+              </Box>
+            </Box>
 
             <Link className={classes.link} to="/">
-              <NotificationsIcon fontSize="large" />
+              <NotificationsIcon fontSize="default" />
             </Link>
 
             <Link className={classes.link} to="/Cart">
               <Box className={classes.cart}>
                 <Box className={classes.notificationIcon}>
-                  {getCartlength()}
+                  <strong>{getCartlength()}</strong>
                 </Box>
                 <ShoppingCartIcon
                   className={classes.carticon}
-                  fontSize="large"
+                  fontSize="default"
                 />
               </Box>
             </Link>

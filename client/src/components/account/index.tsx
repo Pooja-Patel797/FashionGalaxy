@@ -3,8 +3,6 @@ import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import React, { useState } from "react";
 import { useStyles } from "./style";
-import { SignIn } from "./SignIn";
-// import { Register } from "./Register";
 import { Link } from "react-router-dom";
 
 export const FormLayout = (props: any) => {

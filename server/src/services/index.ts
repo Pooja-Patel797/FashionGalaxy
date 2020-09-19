@@ -6,8 +6,16 @@ import {
   deleteUser,
   updateUser,
   getUserById,
+  getUserByEmailPassword,
 } from "./user";
 
 export { addRole };
 export { addProduct, getAllProducts, getProductById };
-export { addUser, getAllUser, deleteUser, updateUser, getUserById };
+export {
+  addUser,
+  getAllUser,
+  deleteUser,
+  updateUser,
+  getUserById,
+  getUserByEmailPassword,
+};

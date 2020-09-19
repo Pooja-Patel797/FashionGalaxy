@@ -10,24 +10,31 @@ import {
   CardContent,
   CardActions,
   IconButton,
+  Paper,
 } from "@material-ui/core";
 import Product, { ProductDetailList } from "../../../common/ProductDetailList";
 import { useStyles } from "./style";
 import { StarRating } from "../StarRating";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
-import { CartContext } from "../../../context-api/CartProvider";
 import { Link } from "react-router-dom";
 import { ProductSizes } from "../ProductSize";
+import { StateContext } from "../../../StateProvider/StateProvider";
+import { useHistory } from "react-router-dom";
 
-export const Products = () => {
+export const Products = (props: any) => {
   const classes = useStyles();
-  const context = useContext(CartContext);
-  let cart = context.cart;
-  const setCart: any = context.setcart;
+  const [state, dispatch] = useContext(StateContext);
+  const history = useHistory();
 
   let addToCart = (id: number) => {
-    console.log(cart.length);
-    setCart([...cart, id]);
+    if (state.user !== null) {
+      dispatch({
+        type: "ADD_TO_CART",
+        item: id,
+      });
+    } else {
+      history.push("/SignIn");
+    }
   };
 
   return (
@@ -38,7 +45,7 @@ export const Products = () => {
             <Link to={`/ProductDetail/${product.pid}`}>
               <CardMedia
                 className={classes.media}
-                image={product.img_url}
+                image={product.img_url[0]}
                 title={product.product_name}
               />
             </Link>

@@ -1,39 +1,24 @@
- 
- import React, { useState, useEffect } from "react";
+import { searchUser } from "../api/users";
+import { setSession } from "../common/SesssionStorage";
 
- export const UserContext = React.createContext({
-     name:"",
-   email:"",
-   id:"",
- });
- 
- export const CartProvider = (props: any) => {
-   const [name, setName] = useState(() => {
-     const localData = localStorage.getItem("name");
-     return localData ? JSON.parse(localData) : [];
-   });
-   const [email, setEmail] = useState(() => {
-    const localData = localStorage.getItem("email");
-    return localData ? JSON.parse(localData) : [];
-  });
-  const [id, setId] = useState(() => {
-    const localData = localStorage.getItem("id");
-    return localData ? JSON.parse(localData) : [];
-  });
- 
-  
- 
-   return (
-     <UserContext.Provider value={{ name:  }}>
-       {console.log(cart)}
-       {props.children}
-     </UserContext.Provider>
-   );
- };
- 
- 
- 
- 
- export const auth=()=>{
+export const authUser = async (email: string, password: any) => {
+  let response;
+  await searchUser(email, password).then((data: any) => {
+    if (data == null) response = false;
+    else {
+      console.log("inside authuser");
+      console.log(data.userId);
+      setSession("user", {
+        userId: data.userId,
+        emailId: email,
+        username: data.name,
+        isAuthenticated: true,
+      });
 
-}
+      console.log("isAutheticated");
+      response = true;
+    }
+  });
+
+  return response;
+};

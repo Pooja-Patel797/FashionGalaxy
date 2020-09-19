@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
-import { CssBaseline, Container, Box } from "@material-ui/core";
+import { CssBaseline, Container, Box, Paper } from "@material-ui/core";
 import { useStyles } from "./style";
 import { Products } from "./Products";
-import { Carousel } from "../Carousel";
+import { Carousel } from "./Carousel";
+import { Brands } from "./Brands";
 
 export const Home = () => {
   const classes = useStyles();
@@ -13,9 +14,21 @@ export const Home = () => {
   return (
     <React.Fragment>
       <CssBaseline>
-        <Container className={classes.container}>
-          <Carousel />
-          <Box className={classes.container_box}>
+        <Container className={classes.root_container}>
+          <Box className={classes.carousel_container}>
+            <Carousel />
+          </Box>
+
+          <Box className={classes.brand_container}>
+            <Paper className={classes.product_heading}>
+              <strong>OUR TOP-BRANDS</strong>
+            </Paper>
+            <Brands />
+          </Box>
+          <Box className={classes.product_container}>
+            <Paper className={classes.product_heading}>
+              <strong>SPECIAL WOMEN COLLECTION</strong>
+            </Paper>
             <Products />
           </Box>
         </Container>

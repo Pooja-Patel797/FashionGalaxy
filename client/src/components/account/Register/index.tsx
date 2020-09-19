@@ -1,5 +1,5 @@
 import { FormLayout } from "../index";
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { useStyles } from "./style";
 import { Button, CssBaseline } from "@material-ui/core";
 import { Username, Email, Password } from "../common/credentialsFields";
@@ -23,7 +23,7 @@ export const Register = (props: any) => {
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
-    let status;
+
     event.preventDefault();
     let userError = validateUsername(user.value);
     let emailError = validateUsername(email.value);
@@ -35,13 +35,17 @@ export const Register = (props: any) => {
       password: password.value,
     };
     console.log("inside submit");
-    if (userError == false && emailError == false && passwordError == false) {
-      status = addUser(userDetails)
+    if (
+      userError === false &&
+      emailError === false &&
+      passwordError === false
+    ) {
+      addUser(userDetails)
         .then((res) => {
-          if (res == true) {
+          if (res === true) {
             props.history.push("/SignIn");
           }
-          if (res == false) {
+          if (res === false) {
             window.alert("Email already exists!!!");
           }
         })

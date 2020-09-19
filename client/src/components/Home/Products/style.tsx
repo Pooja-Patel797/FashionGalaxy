@@ -6,21 +6,23 @@ export const useStyles = makeStyles((theme) => ({
       display: "flex",
       flexDirection: "row",
       height: "auto",
+      marginTop: "4vw",
     },
     [theme.breakpoints.between(600, 1920)]: {
       height: "auto",
       display: "grid",
-      gridTemplateColumns: "repeat(auto-fit,minmax(250px,1fr))",
+      marginTop: "4vw",
+      gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))",
     },
   },
   gridListTile: {
     width: "100% !important",
     height: "100% !important",
-    // padding: "2vw !important",
+    padding: "1vw !important",
   },
   root: {
     maxWidth: "100%",
-    padding: "",
+    margin: "2px",
   },
   card_content: {
     padding: "0px",

@@ -8,20 +8,24 @@ export const useStyles = makeStyles({
   carticon: {
     //marginRight: "20px",
   },
-
+  link_wrapper: {
+    marginTop: "12px",
+  },
   link: {
     textDecoration: "none",
-    // fontWeight: "Bold",
-    fontSize: "2vw",
-    marginTop: "12px",
+    marginTop: "1vw",
+    fontSize: "1.5vw",
+
     // padding: "10px"
   },
-
+  profile: {
+    width: "3vw",
+  },
   search: {
     border: "1px solid gray",
     padding: "10px",
     //marginTop:"2px",
-    height: "2%",
+    height: "4vw",
     width: "50%",
     justifyContent: "left",
   },
@@ -37,13 +41,16 @@ export const useStyles = makeStyles({
   },
 
   notificationIcon: {
-    backgroundColor: "red",
+    backgroundColor: "#ff3333",
     fontSize: "1vw",
-    width: "20px",
-    height: "20px",
+    width: "1.5vw",
+    height: "1.5vw",
     // marginTop: "-1.5vw",
     borderRadius: "50%",
     textAlign: "center",
     marginLeft: "20px",
+  },
+  username: {
+    fontSize: "12px",
   },
 });

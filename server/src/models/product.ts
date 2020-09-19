@@ -30,13 +30,13 @@ export const ProductModel = (sequelize: any, Sequelize: any) => {
       type: DataTypes.STRING(250),
     },
     productImagePath: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.STRING(200),
     },
     productRating: {
       type: DataTypes.INTEGER,
     },
     productSize: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING(30),
     },
   });
 

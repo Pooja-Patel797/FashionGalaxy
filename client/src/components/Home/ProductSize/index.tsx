@@ -10,6 +10,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   card_content_sizeicon: {
     margin: "3px",
+    backgroundImage: "radial-gradient(#00b3b3 15%, #009999 35%, #008b8b 50%);",
 
     [theme.breakpoints.between(0, 599)]: {
       width: "10vw",

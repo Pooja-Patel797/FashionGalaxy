@@ -1,6 +1,7 @@
 import { User, sequelize } from "../models/index";
 import { v4 as uuid } from "uuid";
 import { redis_client } from "../config/server";
+import { Op } from "sequelize";
 
 export const addUser = async (user: any) => {
   console.log("in service");
@@ -41,9 +42,24 @@ export const getUserByEmail = async (email: any) => {
   const result = await User.findOne({
     where: { email: email },
   });
+  console.log("in email passs");
+  console.log(result);
   if (result != null) return "false";
   return true;
 };
+
+export const getUserByEmailPassword = async (email: any, password: any) => {
+  console.log(password);
+  const res = await User.findOne({
+    attributes: ["userId", "name"],
+    where: {
+      [Op.and]: [{ email: email }, { password: password }],
+    },
+  });
+  console.log(res);
+  return res;
+};
+
 export const updateUser = async (id: string, user: any) => {
   const result = await User.update(
     { roleRoleId: user.id },

@@ -11,10 +11,16 @@ export const addUser = async (user: any) => {
   return result;
 };
 
-export const searchUser = async (id: string) => {
+export const searchUser = async (email: string, password: string) => {
   let result;
-  await axios.get(`http://localhost:8000/api/user/`).then((res) => {
-    result = res.status;
-  });
+  await axios
+    .get(`http://localhost:8000/api/user/` + email + `/` + password)
+    .then((res) => {
+      console.log(res);
+      if (res.data.length !== 0) result = res.data;
+      else result = null;
+    });
   return result;
 };
+
+//http://localhost:8000/api/user/poojapatel@gmail.com/pooja797

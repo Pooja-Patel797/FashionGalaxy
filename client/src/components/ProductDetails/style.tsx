@@ -2,13 +2,17 @@ import { makeStyles } from "@material-ui/core";
 
 export const useStyles = makeStyles({
   container: {
-    marginTop: "10vw",
+    marginTop: "5vw",
   },
   grid: {
-    display: "flex",
-    flexDirection: "row",
+    display: "grid",
+    gridTemplateColumns: "50vw 40vw",
   },
-  imageWrapper: {},
+  imageWrapper: {
+    display: "grid",
+    gridTemplateColumns: "repeat(2,minmax(300px,1fr))",
+    height: "auto",
+  },
   productDetailsWrapper: {
     width: "100%",
     justifyContent: "center",
@@ -18,5 +22,9 @@ export const useStyles = makeStyles({
   productDetailsBox: {
     width: "50%",
     padding: "6px",
+  },
+  productImage: {
+    width: "100%",
+    height: "100%",
   },
 });

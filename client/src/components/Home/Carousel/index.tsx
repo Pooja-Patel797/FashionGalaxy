@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography, Container } from "@material-ui/core";
 import { useStyles } from "./style";
-import { ImageDetailList } from "../../common/ImagesForCarousel";
+import { ImageDetailList } from "../../../common/ImagesForCarousel";
 
 let imgUrl: string = ImageDetailList[0].img_url;
 let imgkeyword: string = ImageDetailList[0].keyword;

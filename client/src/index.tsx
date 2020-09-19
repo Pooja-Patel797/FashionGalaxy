@@ -3,9 +3,14 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import { RouteComponent } from "./RouteComponent";
+import { initialState, reducer } from "./Reducers/Reducer";
+import { StateProvider } from "./StateProvider/StateProvider";
 
 ReactDOM.render(
-  React.createElement(RouteComponent),
+  // React.createElement(RouteComponent),
+  <StateProvider initialState={initialState} reducer={reducer}>
+    <RouteComponent />
+  </StateProvider>,
   document.getElementById("root")
 );
 

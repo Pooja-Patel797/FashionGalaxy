@@ -3,7 +3,7 @@ import { v4 as uuid } from "uuid";
 import { Product } from "../models/index";
 
 export const addProduct = async (product: any) => {
-  const result = await User.create({
+  const result = await Product.create({
     productId: uuid(),
     productName: product.productName,
     productDesc: product.productDesc,

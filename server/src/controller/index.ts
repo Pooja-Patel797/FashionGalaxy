@@ -10,6 +10,7 @@ import {
   updateUserController,
   deleteUserController,
   getUserByIdController,
+  getUserByEmailPasswordController,
 } from "./userController";
 
 export { roleController };
@@ -19,6 +20,7 @@ export {
   updateUserController,
   deleteUserController,
   getUserByIdController,
+  getUserByEmailPasswordController,
 };
 export {
   addProductController,
