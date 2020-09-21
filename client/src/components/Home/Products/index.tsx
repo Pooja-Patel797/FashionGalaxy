@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   Typography,
   GridListTile,
@@ -10,7 +10,6 @@ import {
   CardContent,
   CardActions,
   IconButton,
-  Paper,
 } from "@material-ui/core";
 import Product, { ProductDetailList } from "../../../common/ProductDetailList";
 import { useStyles } from "./style";
@@ -24,14 +23,22 @@ import { useHistory } from "react-router-dom";
 export const Products = (props: any) => {
   const classes = useStyles();
   const [state, dispatch] = useContext(StateContext);
+  const [size, setSize] = useState("");
   const history = useHistory();
 
-  let addToCart = (id: number) => {
+  const addToCart = (id: string) => {
     if (state.user !== null) {
-      dispatch({
-        type: "ADD_TO_CART",
-        item: id,
-      });
+      if (size === "") {
+        window.alert("please select size");
+      } else {
+        console.log("product size");
+        console.log(size);
+        dispatch({
+          type: "ADD_TO_CART",
+          item: { id: id, size: size },
+        });
+        setSize("");
+      }
     } else {
       history.push("/SignIn");
     }
@@ -45,7 +52,7 @@ export const Products = (props: any) => {
             <Link to={`/ProductDetail/${product.pid}`}>
               <CardMedia
                 className={classes.media}
-                image={product.img_url[0]}
+                image={product.img_url.cardImage}
                 title={product.product_name}
               />
             </Link>
@@ -56,7 +63,7 @@ export const Products = (props: any) => {
             />
             <CardContent className={classes.card_content}>
               <Box className={classes.card_content_box}>
-                <ProductSizes size={product.product_size} />
+                <ProductSizes size={product.product_size} setSize={setSize} />
                 <Typography className={classes.card_content_price}>
                   Price :{product.price}
                 </Typography>

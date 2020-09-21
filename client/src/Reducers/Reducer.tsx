@@ -1,4 +1,5 @@
 import { getLocalStorage, setLocalStorage } from "../common/LocalStorage";
+import { deleteSession } from "../common/SesssionStorage";
 
 interface State {
   cart: [];
@@ -42,8 +43,10 @@ export const reducer = (state: State, action: Actions) => {
       console.log(state.user);
       return { ...state, user: action.user };
 
-    case "LOGOUT_USER":
-      return {};
+    case "LOGOUT_USER": {
+      deleteSession("user");
+      return { ...state, user: null };
+    }
 
     default:
       return state;

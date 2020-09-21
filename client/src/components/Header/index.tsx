@@ -7,11 +7,12 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { useStyles } from "./style";
 import { StateContext } from "../../StateProvider/StateProvider";
-
+import { DropDown } from "./DropDown";
 export const Header = () => {
   console.log("In header");
 
   const [state, dispatch] = useContext(StateContext);
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   const classes = useStyles();
 
@@ -20,26 +21,31 @@ export const Header = () => {
   };
   const getUserName = () => {
     if (state.user != null) {
-      console.log("inside getusername if");
-
       return "hello " + state.user.username;
     } else {
-      console.log("inside getusername else");
-
       return "hello guest!!";
     }
+  };
+
+  const handleClick = (event: any) => {
+    setAnchorEl(event.currentTarget);
+    console.log("in click");
   };
 
   return (
     <React.Fragment>
       <CssBaseline>
-        <AppBar position="relative" color="transparent">
+        <AppBar
+          position="relative"
+          color="transparent"
+          className={classes.header}
+        >
           <Box
             display="flex"
             justifyContent="space-between"
             m={1}
             p={1}
-            bgcolor="background.paper"
+            // bgcolor="background.paper"
           >
             <img
               className={classes.imgicon}
@@ -67,11 +73,10 @@ export const Header = () => {
             </div>
 
             <Box className={classes.profile}>
-              <Box className={classes.link}>
-                <Link to="/SignIn">
-                  <AccountCircleIcon fontSize="default" />
-                </Link>
+              <Box className={classes.link} onClick={handleClick}>
+                <AccountCircleIcon fontSize="default" />
               </Box>
+              <DropDown anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
               <Box className={classes.username}>
                 {" "}
                 <strong>{getUserName()} </strong>

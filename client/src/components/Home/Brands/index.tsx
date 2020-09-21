@@ -3,14 +3,14 @@ import { GridList, GridListTile, Box } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { BrandList } from "../../../common/BrandList";
 import { useStyles } from "./style";
-
+import { v4 as uuid } from "uuid";
 export const Brands = () => {
   const classes = useStyles();
 
   return (
     <GridList className={classes.gridList}>
       {BrandList.map((brand) => (
-        <GridListTile className={classes.gridListTile}>
+        <GridListTile className={classes.gridListTile} key={uuid()}>
           <Box className={classes.brand}>
             <Box className={classes.brandlogo}>
               <Link to="">

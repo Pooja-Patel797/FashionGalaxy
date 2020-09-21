@@ -20,18 +20,24 @@ export const SignIn = (props: any) => {
   };
 
   const handleSubmit = () => {
-    authUser(email.value, password.value).then((res) => {
-      if (res === true) {
-        dispatch({
-          type: "LOGIN_USER",
-          user: getSession("user"),
-        });
-        props.history.push("/");
-      } else {
-        window.alert("Invalid credentials");
-      }
-    });
+    authUser(email.value, password.value)
+      .then((res) => {
+        if (res === true) {
+          dispatch({
+            type: "LOGIN_USER",
+            user: getSession("user"),
+          });
+          props.history.push("/");
+        } else {
+          window.alert("Invalid credentials");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        window.alert("Something went wrong");
+      });
   };
+
   useEffect(() => {
     window.scrollTo(0, 0);
   });

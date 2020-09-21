@@ -32,7 +32,6 @@ export const RouteComponent = () => {
             <Route path="/Register" exact component={Register} />
             <Route path="/Cart" exact component={Cart} />
             <Route path="/ProductDetail/:id" exact component={ProductDetails} />
-            {/* <Route path="/Auth" exact component={AuthUser} /> */}
           </Switch>
         </Layout>
       </CartProvider>

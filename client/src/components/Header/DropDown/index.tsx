@@ -1,86 +1,73 @@
-import React from "react";
-// import Button from '@material-ui/core/Button';
-// import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-// import Grow from '@material-ui/core/Grow';
-// import Paper from '@material-ui/core/Paper';
-// import Popper from '@material-ui/core/Popper';
-// import MenuItem from '@material-ui/core/MenuItem';
-// import MenuList from '@material-ui/core/MenuList';
-// import { useStyles } from './style';
+import React, { useContext } from "react";
+import { Paper, Menu, MenuItem, Box } from "@material-ui/core";
+import { StateContext } from "../../../StateProvider/StateProvider";
+import { useStyles } from "./style";
+import { Link } from "react-router-dom";
 
-// export default function MenuListComposition() {
-//   const classes = useStyles();
-//   const [open, setOpen] = React.useState(false);
-//   const anchorRef = React.useRef(null);
+export const DropDown = (props: any) => {
+  const classes = useStyles();
+  const [state, dispatch] = useContext(StateContext);
 
-//   const handleToggle = () => {
-//     setOpen((prevOpen) => !prevOpen);
-//   };
+  const handleClose = () => {
+    props.setAnchorEl(null);
+  };
 
-//   const handleClose = (event:any) => {
-//     if (anchorRef.current && anchorRef.current.contains(event.target)) {
-//       return;
-//     }
+  const handleLogout = () => {
+    dispatch({
+      type: "LOGOUT_USER",
+      user: null,
+    });
+    handleClose();
+  };
 
-//     setOpen(false);
-//   };
+  const getMenu = () => {
+    if (state.user != null) {
+      console.log("in menu if");
+      return (
+        <Box>
+          <MenuItem>
+            <strong>{"Welcome " + state.user.username}</strong>
+          </MenuItem>
+          <hr></hr>
+          <MenuItem>My account</MenuItem>
+          <MenuItem onClick={handleLogout}>Logout</MenuItem>
+        </Box>
+      );
+    } else {
+      console.log("in menu else");
+      return (
+        <Box>
+          <MenuItem>
+            <strong>{"Welcome Guest"}</strong>
+          </MenuItem>
+          <hr></hr>
+          <MenuItem>
+            {" "}
+            <p>You need to login to access your account. </p>
+          </MenuItem>
 
-//   function handleListKeyDown(event:any) {
-//     if (event.key === 'Tab') {
-//       event.preventDefault();
-//       setOpen(false);
-//     }
-//   }
+          <MenuItem>
+            {" "}
+            <Link to="/SignIn">LogIn </Link>
+          </MenuItem>
+        </Box>
+      );
+    }
+  };
 
-//   // return focus to the button when we transitioned from !open -> open
-//   const prevOpen = React.useRef(open);
-//   React.useEffect(() => {
-//     if (prevOpen.current === true && open === false) {
-//       anchorRef.current.focus();
-//     }
-
-//     prevOpen.current = open;
-//   }, [open]);
-
-//   return (
-//     <div className={classes.root}>
-//       <Paper className={classes.paper}>
-//         <MenuList>
-//           <strong> <h5>Welcome Guest!!</h5></strong>
-//           <h6>For accessing your </h6>
-//           <MenuItem>Profile</MenuItem>
-//           <MenuItem>My account</MenuItem>
-//           <MenuItem>Logout</MenuItem>
-//         </MenuList>
-//       </Paper>
-//       <div>
-//         <Button
-//           ref={anchorRef}
-//           aria-controls={open ? 'menu-list-grow' : undefined}
-//           aria-haspopup="true"
-//           onClick={handleToggle}
-//         >
-//           Toggle Menu Grow
-//         </Button>
-//         <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
-//           {({ TransitionProps, placement }) => (
-//             <Grow
-//               {...TransitionProps}
-//               style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
-//             >
-//               <Paper>
-//                 <ClickAwayListener onClickAway={handleClose}>
-//                   <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-//                     <MenuItem onClick={handleClose}>Profile</MenuItem>
-//                     <MenuItem onClick={handleClose}>My account</MenuItem>
-//                     <MenuItem onClick={handleClose}>Logout</MenuItem>
-//                   </MenuList>
-//                 </ClickAwayListener>
-//               </Paper>
-//             </Grow>
-//           )}
-//         </Popper>
-//       </div>
-//     </div>
-//   );
-// }
+  return (
+    <Box className={classes.root}>
+      <Paper>
+        <Menu
+          id="simple-menu"
+          anchorEl={props.anchorEl}
+          keepMounted
+          open={Boolean(props.anchorEl)}
+          onClose={handleClose}
+        >
+          {getMenu()}
+        </Menu>
+      </Paper>
+    </Box>
+  );
+};

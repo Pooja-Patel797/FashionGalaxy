@@ -32,7 +32,14 @@ export const ProductSizes = (props: any) => {
   return (
     <Box className={classes.card_content_sizelist}>
       {sizes.map((size: string) => (
-        <IconButton className={classes.IconButton} key={size}>
+        <IconButton
+          className={classes.IconButton}
+          key={size}
+          onClick={(event: any) => {
+            console.log(event.target.value);
+            props.setSize(size);
+          }}
+        >
           <Avatar
             className={classes.card_content_sizeicon}
             alt={size}

@@ -1,5 +1,11 @@
-import React, { useContext, useEffect } from "react";
-import { Typography, Container, Box, Button } from "@material-ui/core";
+import React, { useContext, useEffect, useState } from "react";
+import {
+  Typography,
+  Container,
+  Box,
+  Button,
+  Backdrop,
+} from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { ProductSizes } from "../Home/ProductSize";
 import { useStyles } from "./style";
@@ -8,41 +14,77 @@ import { ProductDetailList } from "../../common/ProductDetailList";
 import { RouteComponentProps } from "react-router-dom";
 import { StateContext } from "../../StateProvider/StateProvider";
 import { useHistory } from "react-router-dom";
+import { v4 as uuid } from "uuid";
 
 type TParams = { id: any };
 
 export const ProductDetails = ({ match }: RouteComponentProps<TParams>) => {
   const [state, dispatch] = useContext(StateContext);
+  const [open, setOpen] = useState(false);
+  // const [url, setUrl] = useState("");
+  const [size, setSize] = useState("");
+  const [id, setId] = useState(0);
   const history = useHistory();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   });
 
-  let addToCart = (id: number) => {
+  let addToCart = (id: string) => {
     if (state.user !== null) {
-      dispatch({
-        type: "ADD_TO_CART",
-        item: id,
-      });
+      if (size !== "") {
+        dispatch({
+          type: "ADD_TO_CART",
+          item: { id: id, size: size },
+        });
+        setSize("");
+      } else {
+        window.alert("Please select the size");
+      }
     } else {
       history.push("/SignIn");
     }
   };
 
+  let handleClick = (event: any, index: number) => {
+    setId(index);
+    setOpen(true);
+  };
+
+  let handleClose = () => {
+    setOpen(false);
+  };
+
   const classes = useStyles();
   const productId = match.params.id;
-  const product = ProductDetailList[productId - 1];
+  const product = ProductDetailList[parseInt(productId)];
+  console.log(product);
   return (
     <Container className={classes.container}>
       <Box className={classes.grid}>
         <Box className={classes.imageWrapper}>
-          {product.img_url.map((url: any) => (
-            <Box>
-              <Link to="">
-                <img className={classes.productImage} src={url} alt={url} />
-              </Link>
+          {product.img_url.gridImage.map((url: any, index: any) => (
+            <Box key={uuid()}>
+              <img
+                className={classes.productImage}
+                src={url}
+                alt={url}
+                id={index}
+                onClick={(event) => handleClick(event, index)}
+              />
             </Box>
           ))}
+          <Backdrop
+            className={classes.backdrop}
+            open={open}
+            onClick={handleClose}
+          >
+            <img
+              className={classes.backdropProductImage}
+              src={product.img_url.backdropImage[id]}
+              alt={product.img_url.backdropImage[id]}
+            />
+          </Backdrop>
         </Box>
         <Box className={classes.productDetailsWrapper}>
           <Box className={classes.productDetailsBox}>
@@ -56,7 +98,7 @@ export const ProductDetails = ({ match }: RouteComponentProps<TParams>) => {
             <br />
             <Box>
               <Typography variant="h6">Size Available :</Typography>
-              <ProductSizes size={product.product_size} />
+              <ProductSizes size={product.product_size} setSize={setSize} />
             </Box>
             <br />
             <StarRating product={product} />

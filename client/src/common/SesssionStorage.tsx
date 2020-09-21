@@ -7,3 +7,8 @@ export const getSession = (key: string) => {
   if (value != null) return JSON.parse(value);
   else return false;
 };
+
+export const deleteSession = (key: string) => {
+  localStorage.removeItem(key);
+  console.log("deleted sesiion for user");
+};

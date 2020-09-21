@@ -2,7 +2,7 @@ import { makeStyles } from "@material-ui/core";
 
 export const useStyles = makeStyles({
   container: {
-    marginTop: "5vw",
+    marginTop: "20vh",
   },
   grid: {
     display: "grid",
@@ -10,7 +10,8 @@ export const useStyles = makeStyles({
   },
   imageWrapper: {
     display: "grid",
-    gridTemplateColumns: "repeat(2,minmax(300px,1fr))",
+    gridTemplateColumns: "repeat(2,minmax(150px,1fr))",
+    gridColumnGap: "5px",
     height: "auto",
   },
   productDetailsWrapper: {
@@ -26,5 +27,16 @@ export const useStyles = makeStyles({
   productImage: {
     width: "100%",
     height: "100%",
+  },
+  backdrop: {
+    zIndex: 2,
+    color: "#202020",
+    overflowY: "scroll",
+  },
+
+  backdropProductImage: {
+    width: "980px",
+    height: "1306px",
+    marginTop: "100vh",
   },
 });

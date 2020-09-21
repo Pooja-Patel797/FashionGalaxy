@@ -27,7 +27,7 @@ export const Home = () => {
           </Box>
           <Box className={classes.product_container}>
             <Paper className={classes.product_heading}>
-              <strong>SPECIAL WOMEN COLLECTION</strong>
+              <strong>SPECIAL COLLECTION</strong>
             </Paper>
             <Products />
           </Box>

@@ -44,13 +44,6 @@ router.route("/supplier/:id").get();
 router.route("supplier/:supplier").put();
 router.route("/supplier/:id").delete();
 
-//api's for suppliers
-router.route("/supplier/:supplier").post(roleController);
-router.route("/supplier").get();
-router.route("/supplier/:id").get();
-router.route("supplier/:supplier").put();
-router.route("/supplier/:id").delete();
-
 //api's for category
 router.route("/category/:category").post(roleController);
 router.route("/category").get();

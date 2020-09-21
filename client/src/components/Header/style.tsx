@@ -1,6 +1,10 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 export const useStyles = makeStyles({
+  header: {
+    // height: "20px",
+    zIndex: 1,
+  },
   imgicon: {
     width: "6%",
     height: "4%",
