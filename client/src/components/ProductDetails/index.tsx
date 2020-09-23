@@ -21,7 +21,6 @@ type TParams = { id: any };
 export const ProductDetails = ({ match }: RouteComponentProps<TParams>) => {
   const [state, dispatch] = useContext(StateContext);
   const [open, setOpen] = useState(false);
-  // const [url, setUrl] = useState("");
   const [size, setSize] = useState("");
   const [id, setId] = useState(0);
   const history = useHistory();

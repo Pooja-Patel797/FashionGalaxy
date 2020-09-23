@@ -8,7 +8,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Layout } from "./components/LayOut";
 import { CartProvider } from "./context-api/CartProvider";
 import { StateContext } from "../src/StateProvider/StateProvider";
-import { getSession } from "../src/common/SesssionStorage";
+import { getSession } from "./utils/SesssionStorage";
 
 export const RouteComponent = () => {
   const [state, dispatch] = useContext(StateContext);

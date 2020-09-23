@@ -1,26 +1,21 @@
 import axios from "axios";
+import { IUser } from "../interfaces/UserInterface";
 
-export const addUser = async (user: any) => {
+export const addUser = async (user: IUser) => {
   let result;
 
-  await axios.post(`http://localhost:8000/api/user`, { user }).then((res) => {
-    result = res.data;
-    console.log("inside add user");
-    console.log(result);
-  });
-  return result;
+  result = await axios.post(`http://localhost:8000/api/user`, { user });
+  return result.data;
 };
 
 export const searchUser = async (email: string, password: string) => {
   let result;
-  await axios
-    .get(`http://localhost:8000/api/user/` + email + `/` + password)
-    .then((res) => {
-      console.log(res);
-      if (res.data.length !== 0) result = res.data;
-      else result = null;
-    });
-  return result;
+  result = await axios.get(
+    `http://localhost:8000/api/user/` + email + `/` + password
+  );
+
+  if (result.data.length !== 0) return result.data;
+  else return null;
 };
 
 //http://localhost:8000/api/user/poojapatel@gmail.com/pooja797

@@ -7,21 +7,21 @@ export const addUser = async (user: any) => {
   console.log("in service");
   console.log(user.name);
   let queryresponse;
-  await getUserByEmail(user.email).then((result) => {
-    if (result == true) {
-      queryresponse = User.create({
-        userId: uuid(),
-        name: user.name,
-        email: user.email,
-        password: user.password,
-        isStatus: "active",
-        roleRoleId: 2,
-      });
-      queryresponse = true;
-    } else {
-      queryresponse = false;
-    }
-  });
+  const result = await getUserByEmail(user.email);
+  if (result) {
+    queryresponse = User.create({
+      userId: uuid(),
+      name: user.name,
+      email: user.email,
+      password: user.password,
+      isStatus: "active",
+      roleRoleId: 2,
+    });
+    queryresponse = true;
+  } else {
+    queryresponse = false;
+  }
+
   return queryresponse;
 };
 

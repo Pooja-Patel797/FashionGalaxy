@@ -30,16 +30,3 @@ export const getProductById = async (user: any) => {
   });
   return result;
 };
-// export const updateUser = async (id: string, user: any) => {
-//   const result = await User.update(
-//     { roleRoleId: user.id },
-//     { where: { userId: id } }
-//   );
-
-//   return result;
-// };
-
-// export const deleteUser = async (id: string) => {
-//   const result = await User.destroy({ where: { userId: id } });
-//   return result;
-// };

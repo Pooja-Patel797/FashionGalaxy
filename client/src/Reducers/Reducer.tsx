@@ -1,5 +1,5 @@
-import { getLocalStorage, setLocalStorage } from "../common/LocalStorage";
-import { deleteSession } from "../common/SesssionStorage";
+import { getLocalStorage, setLocalStorage } from "../utils/LocalStorage";
+import { deleteSession } from "../utils/SesssionStorage";
 
 interface State {
   cart: [];

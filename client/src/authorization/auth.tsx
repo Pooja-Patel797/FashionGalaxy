@@ -1,7 +1,7 @@
 import { searchUser } from "../api/users";
-import { setSession } from "../common/SesssionStorage";
+import { setSession } from "../utils/SesssionStorage";
 
-export const authUser = async (email: string, password: any) => {
+export const authUser = async (email: string, password: string) => {
   let response;
   await searchUser(email, password).then((data: any) => {
     if (data == null) response = false;

@@ -3,10 +3,10 @@ import React, { useState, useContext, useEffect } from "react";
 import { useStyles } from "./style";
 import { validateEmail, validatePassword } from "../common/Validation";
 import { FormLayout } from "../index";
-import { Email, Password } from "../common/credentialsFields";
+import { Email, Password } from "../common/FormFields";
 import { authUser } from "../../../authorization/auth";
 import { StateContext } from "../../../StateProvider/StateProvider";
-import { getSession } from "../../../common/SesssionStorage";
+import { getSession } from "../../../utils/SesssionStorage";
 
 export const SignIn = (props: any) => {
   const [email, setEmail] = useState({ value: "", error: "" });
@@ -19,10 +19,10 @@ export const SignIn = (props: any) => {
     setCredentials({ value: value, error: result });
   };
 
-  const handleSubmit = () => {
-    authUser(email.value, password.value)
+  const handleSubmit = async () => {
+    await authUser(email.value, password.value)
       .then((res) => {
-        if (res === true) {
+        if (res) {
           dispatch({
             type: "LOGIN_USER",
             user: getSession("user"),

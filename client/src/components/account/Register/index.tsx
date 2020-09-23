@@ -2,15 +2,20 @@ import { FormLayout } from "../index";
 import React, { useState } from "react";
 import { useStyles } from "./style";
 import { Button, CssBaseline } from "@material-ui/core";
-import { Username, Email, Password } from "../common/credentialsFields";
+import { Username, Email, Password } from "../common/FormFields";
 import {
   validateEmail,
   validateUsername,
   validatePassword,
 } from "../common/Validation";
 import { addUser } from "../../../api/users";
+import { History } from "history";
 
-export const Register = (props: any) => {
+interface PropsRegister {
+  history: History;
+}
+
+export const Register: React.FC<PropsRegister> = (props) => {
   const [user, setUser] = useState({ value: "", error: " " });
   const [email, setEmail] = useState({ value: "", error: " " });
   const [password, setPassword] = useState({ value: "", error: " " });
@@ -21,9 +26,7 @@ export const Register = (props: any) => {
     setCredentials({ value: value, error: result });
   };
 
-  const handleSubmit = (event: any) => {
-    event.preventDefault();
-
+  const handleSubmit = async (event: any) => {
     event.preventDefault();
     let userError = validateUsername(user.value);
     let emailError = validateUsername(email.value);
@@ -40,12 +43,12 @@ export const Register = (props: any) => {
       emailError === false &&
       passwordError === false
     ) {
-      addUser(userDetails)
+      await addUser(userDetails)
         .then((res) => {
-          if (res === true) {
+          if (res) {
             props.history.push("/SignIn");
           }
-          if (res === false) {
+          if (res) {
             window.alert("Email already exists!!!");
           }
         })

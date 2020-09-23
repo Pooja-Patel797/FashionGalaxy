@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getSession, setSession } from "../common/SesssionStorage";
+import { getSession, setSession } from "../utils/SesssionStorage";
 import { SignIn } from "../components/account/SignIn";
 
 export const AuthUserContext: any = React.createContext([{}, () => {}]);
