@@ -8,11 +8,12 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 import { useStyles } from "./style";
 import { StateContext } from "../../StateProvider/StateProvider";
 import { DropDown } from "./DropDown";
+
 export const Header = () => {
   console.log("In header");
 
   const [state, dispatch] = useContext(StateContext);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState();
 
   const classes = useStyles();
 

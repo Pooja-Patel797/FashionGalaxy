@@ -7,20 +7,26 @@ import { Email, Password } from "../common/FormFields";
 import { authUser } from "../../../authorization/auth";
 import { StateContext } from "../../../StateProvider/StateProvider";
 import { getSession } from "../../../utils/SesssionStorage";
+import { FieldObject } from "../interface";
 
 export const SignIn = (props: any) => {
-  const [email, setEmail] = useState({ value: "", error: "" });
-  const [password, setPassword] = useState({ value: "", error: "" });
+  let fieldobject: FieldObject = { value: "", error: "" };
+  const [email, setEmail] = useState(fieldobject);
+  const [password, setPassword] = useState(fieldobject);
   const [state, dispatch] = useContext(StateContext);
 
-  const onhandleChange = (validator: any, event: any, setCredentials: any) => {
+  const onhandleChange = (
+    validator: (value: string) => string,
+    event: React.ChangeEvent<HTMLInputElement>,
+    setCredentials: any
+  ) => {
     let value = event.target.value;
     let result = validator(value);
     setCredentials({ value: value, error: result });
   };
 
   const handleSubmit = async () => {
-    await authUser(email.value, password.value)
+    await authUser({ email: email.value, password: password.value })
       .then((res) => {
         if (res) {
           dispatch({
@@ -38,9 +44,6 @@ export const SignIn = (props: any) => {
       });
   };
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  });
   const classes = useStyles();
   return (
     <FormLayout>

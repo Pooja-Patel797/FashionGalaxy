@@ -1,9 +1,14 @@
 import React from "react";
 import { useStyles } from "./style";
 import Rating from "@material-ui/lab/Rating";
+import Product from "../../../common/ProductDetailList";
 
-export const StarRating = (props: any) => {
-  const [value, setValue] = React.useState(props.product.rating);
+interface RatingProps {
+  rating: number;
+}
+
+export const StarRating = (props: RatingProps) => {
+  const [value, setValue] = React.useState(props.rating);
   const classes = useStyles();
 
   return (

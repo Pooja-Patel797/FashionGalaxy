@@ -4,6 +4,11 @@ import { StateContext } from "../../../StateProvider/StateProvider";
 import { useStyles } from "./style";
 import { Link } from "react-router-dom";
 
+export interface PropsDropDown {
+  AnchorEL: React.FormEvent<HTMLInputElement>;
+  setAnchorEl: React.Dispatch<React.SetStateAction<null>>;
+}
+
 export const DropDown = (props: any) => {
   const classes = useStyles();
   const [state, dispatch] = useContext(StateContext);

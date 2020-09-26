@@ -20,7 +20,7 @@ import { ProductSizes } from "../ProductSize";
 import { StateContext } from "../../../StateProvider/StateProvider";
 import { useHistory } from "react-router-dom";
 
-export const Products = (props: any) => {
+export const Products = () => {
   const classes = useStyles();
   const [state, dispatch] = useContext(StateContext);
   const [size, setSize] = useState("");
@@ -77,7 +77,7 @@ export const Products = (props: any) => {
               >
                 <AddShoppingCartIcon />
               </IconButton>
-              <StarRating product={product} />
+              <StarRating rating={product.rating} />
             </CardActions>
           </Card>
         </GridListTile>

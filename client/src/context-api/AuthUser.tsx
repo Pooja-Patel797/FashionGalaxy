@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { getSession, setSession } from "../utils/SesssionStorage";
 import { SignIn } from "../components/account/SignIn";
+import { IUser } from "../interfaces/UserInterface";
+
+interface IAuthUser {}
 
 export const AuthUserContext: any = React.createContext([{}, () => {}]);
 

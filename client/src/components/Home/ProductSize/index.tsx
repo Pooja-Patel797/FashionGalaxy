@@ -25,8 +25,12 @@ export const useStyles = makeStyles((theme) => ({
     padding: "0px",
   },
 }));
+interface ProductProps {
+  size: string[];
+  setSize: React.Dispatch<React.SetStateAction<string>>;
+}
 
-export const ProductSizes = (props: any) => {
+export const ProductSizes = (props: ProductProps) => {
   const classes = useStyles();
   const sizes: any = props.size;
   return (

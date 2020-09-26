@@ -1,30 +1,12 @@
-import { DataTypes } from "sequelize";
+import mongoose from "mongoose";
+import { v4 as uuid } from "uuid";
 
-export const UsersModel = (sequelize: any, Sequelize: any) => {
-  const Users = sequelize.define("users", {
-    userId: {
-      type: DataTypes.UUID,
-
-      primaryKey: true,
-    },
-    roleRoleId: {
-      type: DataTypes.INTEGER,
-    },
-
-    name: {
-      type: DataTypes.STRING(20),
-    },
-    email: {
-      type: DataTypes.STRING(30),
-    },
-    password: {
-      type: DataTypes.STRING(20),
-    },
-
-    isStatus: {
-      type: DataTypes.STRING(10),
-    },
-  });
-
-  return Users;
-};
+const UserSchema = new mongoose.Schema({
+  id: String,
+  name: String,
+  email: String,
+  password: String,
+  isStatus: Number,
+  roleId: String,
+});
+export const User = mongoose.model("User", UserSchema);

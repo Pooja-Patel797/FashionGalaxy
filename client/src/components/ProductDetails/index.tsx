@@ -45,7 +45,7 @@ export const ProductDetails = ({ match }: RouteComponentProps<TParams>) => {
     }
   };
 
-  let handleClick = (event: any, index: number) => {
+  let handleClick = (index: number) => {
     setId(index);
     setOpen(true);
   };
@@ -69,7 +69,7 @@ export const ProductDetails = ({ match }: RouteComponentProps<TParams>) => {
                 src={url}
                 alt={url}
                 id={index}
-                onClick={(event) => handleClick(event, index)}
+                onClick={() => handleClick(index)}
               />
             </Box>
           ))}
@@ -100,7 +100,7 @@ export const ProductDetails = ({ match }: RouteComponentProps<TParams>) => {
               <ProductSizes size={product.product_size} setSize={setSize} />
             </Box>
             <br />
-            <StarRating product={product} />
+            <StarRating rating={product.rating} />
             <br />
             <Button onClick={() => addToCart(product.pid)} variant="contained">
               Add to cart

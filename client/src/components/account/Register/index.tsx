@@ -10,23 +10,29 @@ import {
 } from "../common/Validation";
 import { addUser } from "../../../api/users";
 import { History } from "history";
+import { FieldObject } from "../interface";
 
 interface PropsRegister {
   history: History;
 }
 
 export const Register: React.FC<PropsRegister> = (props) => {
-  const [user, setUser] = useState({ value: "", error: " " });
-  const [email, setEmail] = useState({ value: "", error: " " });
-  const [password, setPassword] = useState({ value: "", error: " " });
+  let fieldObject: FieldObject = { value: "", error: "" };
+  const [user, setUser] = useState(fieldObject);
+  const [email, setEmail] = useState(fieldObject);
+  const [password, setPassword] = useState(fieldObject);
 
-  const onhandleChange = (validator: any, event: any, setCredentials: any) => {
+  const onhandleChange = (
+    validator: (value: string) => string,
+    event: React.ChangeEvent<HTMLInputElement>,
+    setCredentials: (value: FieldObject) => void
+  ) => {
     let value = event.target.value;
     let result = validator(value);
     setCredentials({ value: value, error: result });
   };
 
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     let userError = validateUsername(user.value);
     let emailError = validateUsername(email.value);
