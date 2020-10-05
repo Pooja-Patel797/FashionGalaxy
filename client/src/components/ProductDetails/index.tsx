@@ -10,11 +10,13 @@ import { Link } from "react-router-dom";
 import { ProductSizes } from "../Home/ProductSize";
 import { useStyles } from "./style";
 import { StarRating } from "../Home/StarRating";
-import { ProductDetailList } from "../../common/ProductDetailList";
+
 import { RouteComponentProps } from "react-router-dom";
 import { StateContext } from "../../StateProvider/StateProvider";
 import { useHistory } from "react-router-dom";
 import { v4 as uuid } from "uuid";
+import { getProduct } from "../../api/product";
+import Product, { initialProduct } from "../../common/ProductDetailList";
 
 type TParams = { id: any };
 
@@ -22,12 +24,20 @@ export const ProductDetails = ({ match }: RouteComponentProps<TParams>) => {
   const [state, dispatch] = useContext(StateContext);
   const [open, setOpen] = useState(false);
   const [size, setSize] = useState("");
-  const [id, setId] = useState(0);
+  const [rating, setRating] = useState(0);
+  const [pid, setPID] = useState(0);
+  const [product, setProduct] = useState(initialProduct);
   const history = useHistory();
+  const classes = useStyles();
+  const id = match.params.id;
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  });
+    getProduct(id).then((data) => {
+      setProduct(data);
+      console.log(product);
+    });
+  }, []);
 
   let addToCart = (id: string) => {
     if (state.user !== null) {
@@ -46,7 +56,7 @@ export const ProductDetails = ({ match }: RouteComponentProps<TParams>) => {
   };
 
   let handleClick = (index: number) => {
-    setId(index);
+    setPID(index);
     setOpen(true);
   };
 
@@ -54,15 +64,11 @@ export const ProductDetails = ({ match }: RouteComponentProps<TParams>) => {
     setOpen(false);
   };
 
-  const classes = useStyles();
-  const productId = match.params.id;
-  const product = ProductDetailList[parseInt(productId)];
-  console.log(product);
   return (
     <Container className={classes.container}>
       <Box className={classes.grid}>
         <Box className={classes.imageWrapper}>
-          {product.img_url.gridImage.map((url: any, index: any) => (
+          {product.imageUrl[0].gridImage.map((url: any, index: any) => (
             <Box key={uuid()}>
               <img
                 className={classes.productImage}
@@ -80,15 +86,15 @@ export const ProductDetails = ({ match }: RouteComponentProps<TParams>) => {
           >
             <img
               className={classes.backdropProductImage}
-              src={product.img_url.backdropImage[id]}
-              alt={product.img_url.backdropImage[id]}
+              src={product.imageUrl[0].backdropImage[pid]}
+              alt={product.imageUrl[0].backdropImage[pid]}
             />
           </Backdrop>
         </Box>
         <Box className={classes.productDetailsWrapper}>
           <Box className={classes.productDetailsBox}>
-            <Typography variant="h3">{product.product_brand}</Typography>
-            <Typography variant="subtitle1">{product.product_name}</Typography>
+            <Typography variant="h3">{product.brand}</Typography>
+            <Typography variant="subtitle1">{product.title}</Typography>
             <br />
             <Typography variant="h6">Product details :</Typography>
             <Typography variant="body1">{product.description}</Typography>
@@ -97,17 +103,19 @@ export const ProductDetails = ({ match }: RouteComponentProps<TParams>) => {
             <br />
             <Box>
               <Typography variant="h6">Size Available :</Typography>
-              <ProductSizes size={product.product_size} setSize={setSize} />
+              <ProductSizes size={product.size} setSize={setSize} />
             </Box>
             <br />
             <StarRating rating={product.rating} />
             <br />
-            <Button onClick={() => addToCart(product.pid)} variant="contained">
+            <Button onClick={() => addToCart(product._id)} variant="contained">
               Add to cart
             </Button>
             <br />
             <Box>
-              <Typography variant="body1">Offers Available :</Typography>
+              <Typography variant="body1">
+                Offers Available :{product.offers}
+              </Typography>
             </Box>
           </Box>
         </Box>

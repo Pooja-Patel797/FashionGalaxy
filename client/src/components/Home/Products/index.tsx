@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   Typography,
   GridListTile,
@@ -11,7 +11,7 @@ import {
   CardActions,
   IconButton,
 } from "@material-ui/core";
-import Product, { ProductDetailList } from "../../../common/ProductDetailList";
+import Product from "../../../common/ProductDetailList";
 import { useStyles } from "./style";
 import { StarRating } from "../StarRating";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
@@ -19,12 +19,23 @@ import { Link } from "react-router-dom";
 import { ProductSizes } from "../ProductSize";
 import { StateContext } from "../../../StateProvider/StateProvider";
 import { useHistory } from "react-router-dom";
+import { getAllProducts } from "../../../api/product";
 
 export const Products = () => {
   const classes = useStyles();
   const [state, dispatch] = useContext(StateContext);
   const [size, setSize] = useState("");
+  const [product, setProduct] = useState([]);
   const history = useHistory();
+
+  useEffect(() => {
+    getAllProducts().then((data) => {
+      setProduct(data);
+      console.log(data);
+    });
+
+    // console.log(product);
+  }, []);
 
   const addToCart = (id: string) => {
     if (state.user !== null) {
@@ -46,24 +57,24 @@ export const Products = () => {
 
   return (
     <GridList className={classes.gridList}>
-      {ProductDetailList.map((product: Product) => (
-        <GridListTile className={classes.gridListTile} key={product.pid}>
-          <Card className={classes.root} key={product.pid}>
-            <Link to={`/ProductDetail/${product.pid}`}>
+      {product.map((product: Product) => (
+        <GridListTile className={classes.gridListTile} key={product._id}>
+          <Card className={classes.root} key={product._id}>
+            <Link to={`/ProductDetail/${product._id}`}>
               <CardMedia
                 className={classes.media}
-                image={product.img_url.cardImage}
-                title={product.product_name}
+                image={product.imageUrl[0].cardImage}
+                title={product.title}
               />
             </Link>
             <CardHeader
-              title={product.product_brand}
-              subheader={product.product_name}
+              title={product.brand}
+              subheader={product.title}
               className={classes.card_header}
             />
             <CardContent className={classes.card_content}>
               <Box className={classes.card_content_box}>
-                <ProductSizes size={product.product_size} setSize={setSize} />
+                <ProductSizes size={product.size} setSize={setSize} />
                 <Typography className={classes.card_content_price}>
                   Price :{product.price}
                 </Typography>
@@ -71,9 +82,9 @@ export const Products = () => {
             </CardContent>
             <CardActions className={classes.card_action}>
               <IconButton
-                onClick={() => addToCart(product.pid)}
+                onClick={() => addToCart(product._id)}
                 aria-label="add to Cart"
-                key={product.pid}
+                key={product._id}
               >
                 <AddShoppingCartIcon />
               </IconButton>

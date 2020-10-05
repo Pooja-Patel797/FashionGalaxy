@@ -42,6 +42,8 @@ export const Register: React.FC<PropsRegister> = (props) => {
       name: user.value,
       email: email.value,
       password: password.value,
+      isStatus: "active",
+      roleId: "user",
     };
     console.log("inside submit");
     if (

@@ -8,12 +8,11 @@ interface RatingProps {
 }
 
 export const StarRating = (props: RatingProps) => {
-  const [value, setValue] = React.useState(props.rating);
   const classes = useStyles();
 
   return (
     <div className={classes.star}>
-      <Rating name="read-only" value={value} readOnly />
+      <Rating name="read-only" value={props.rating} readOnly />
     </div>
   );
 };

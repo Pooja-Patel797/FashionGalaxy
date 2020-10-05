@@ -1,13 +1,14 @@
 import { searchUser } from "../api/users";
-import { setSession } from "../utils/SesssionStorage";
+import { setSession, getSession } from "../utils/SesssionStorage";
 
 export interface ICredentials {
   email: string;
   password: string;
 }
 export interface IData {
-  userId: string;
+  _id: string;
   name: string;
+  email: string;
 }
 
 export const authUser = async (props: ICredentials) => {
@@ -16,14 +17,14 @@ export const authUser = async (props: ICredentials) => {
     if (data == null) response = false;
     else {
       console.log("inside authuser");
-      console.log(data.userId);
+      console.log(data._id);
       setSession("user", {
-        userId: data.userId,
+        userId: data._id,
         emailId: props.email,
         username: data.name,
         isAuthenticated: true,
       });
-
+      console.log(getSession("user"));
       console.log("isAutheticated");
       response = true;
     }
