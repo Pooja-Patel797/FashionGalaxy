@@ -4,8 +4,10 @@ import { InversifyExpressServer } from "inversify-express-utils";
 import "./controllers/homeController";
 import "./controllers/userController";
 import "./controllers/productController";
+import "./controllers/commentController";
 import { DbConnection } from "./db/utils/db.connection";
 import { ContainerConfigLoader } from "./config/container";
+
 import cors from "cors";
 
 // load everything needed to the Container

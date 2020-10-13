@@ -8,6 +8,7 @@ import { Brands } from "./Brands";
 export const Home = () => {
   const classes = useStyles();
   useEffect(() => {
+    console.log("In home");
     window.scrollTo(0, 0);
   });
 

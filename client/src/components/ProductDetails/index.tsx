@@ -6,7 +6,6 @@ import {
   Button,
   Backdrop,
 } from "@material-ui/core";
-import { Link } from "react-router-dom";
 import { ProductSizes } from "../Home/ProductSize";
 import { useStyles } from "./style";
 import { StarRating } from "../Home/StarRating";
@@ -17,7 +16,7 @@ import { useHistory } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import { getProduct } from "../../api/product";
 import Product, { initialProduct } from "../../common/ProductDetailList";
-
+import { Comment } from "./comment";
 type TParams = { id: any };
 
 export const ProductDetails = ({ match }: RouteComponentProps<TParams>) => {
@@ -118,6 +117,8 @@ export const ProductDetails = ({ match }: RouteComponentProps<TParams>) => {
               </Typography>
             </Box>
           </Box>
+
+          <Comment pid={id} />
         </Box>
       </Box>
     </Container>
