@@ -52,6 +52,7 @@ export class CommentsController extends BaseHttpController {
     res: express.Response,
     next: express.NextFunction
   ): Promise<JsonResult> {
+    console.log("Inside controller");
     const content = await this.CommentsService.createComment(req.body);
     const statusCode = 201;
     return this.json(content, statusCode);

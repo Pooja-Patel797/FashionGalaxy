@@ -21,6 +21,13 @@ export const Register: React.FC<PropsRegister> = (props) => {
   const [user, setUser] = useState(fieldObject);
   const [email, setEmail] = useState(fieldObject);
   const [password, setPassword] = useState(fieldObject);
+  const userDetails = {
+    name: user.value,
+    email: email.value,
+    password: password.value,
+    isStatus: "active",
+    roleId: "user",
+  };
 
   const onhandleChange = (
     validator: (value: string) => string,
@@ -35,32 +42,27 @@ export const Register: React.FC<PropsRegister> = (props) => {
   const handleSubmit = async (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     let userError = validateUsername(user.value);
-    let emailError = validateUsername(email.value);
-    let passwordError = validateUsername(password.value);
+    let emailError = validateEmail(email.value);
+    let passwordError = validatePassword(password.value);
 
-    const userDetails = {
-      name: user.value,
-      email: email.value,
-      password: password.value,
-      isStatus: "active",
-      roleId: "user",
-    };
     console.log("inside submit");
     if (
       userError === false &&
       emailError === false &&
       passwordError === false
     ) {
-      await addUser(userDetails)
-        .then((res) => {
-          if (res) {
-            props.history.push("/SignIn");
-          }
-          if (res) {
-            window.alert("Email already exists!!!");
-          }
-        })
-        .catch(() => window.alert("Something went wrong !!!"));
+      try {
+        let res = await await addUser(userDetails);
+
+        console.log(res);
+        if (res != null) {
+          props.history.push("/SignIn");
+        } else {
+          window.alert("Email already exists!!!");
+        }
+      } catch {
+        window.alert("Something went wrong !!!");
+      }
     } else {
       console.log("invalid");
       window.alert("Invalid credentials.");

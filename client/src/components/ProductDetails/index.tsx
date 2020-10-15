@@ -32,10 +32,11 @@ export const ProductDetails = ({ match }: RouteComponentProps<TParams>) => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    getProduct(id).then((data) => {
+    (async () => {
+      let data = await getProduct(id);
       setProduct(data);
       console.log(product);
-    });
+    })();
   }, []);
 
   let addToCart = (id: string) => {
@@ -68,7 +69,7 @@ export const ProductDetails = ({ match }: RouteComponentProps<TParams>) => {
       <Box className={classes.grid}>
         <Box className={classes.imageWrapper}>
           {product.imageUrl[0].gridImage.map((url: any, index: any) => (
-            <Box key={uuid()}>
+            <Box className={classes.imageWrapper__image} key={uuid()}>
               <img
                 className={classes.productImage}
                 src={url}

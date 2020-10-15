@@ -29,12 +29,11 @@ export const Products = () => {
   const history = useHistory();
 
   useEffect(() => {
-    getAllProducts().then((data) => {
+    (async () => {
+      let data = await getAllProducts();
       setProduct(data);
       console.log(data);
-    });
-
-    // console.log(product);
+    })();
   }, []);
 
   const addToCart = (id: string) => {

@@ -13,22 +13,21 @@ export interface IData {
 
 export const authUser = async (props: ICredentials) => {
   let response;
-  await searchUser(props.email, props.password).then((data: IData) => {
-    if (data == null) response = false;
-    else {
-      console.log("inside authuser");
-      console.log(data._id);
-      setSession("user", {
-        userId: data._id,
-        emailId: props.email,
-        username: data.name,
-        isAuthenticated: true,
-      });
-      console.log(getSession("user"));
-      console.log("isAutheticated");
-      response = true;
-    }
-  });
+  let data = await searchUser(props.email, props.password);
+  if (data === null) response = false;
+  else {
+    console.log("inside authuser");
+    console.log(data);
+    setSession("user", {
+      userId: data._id,
+      emailId: props.email,
+      username: data.name,
+      isAuthenticated: true,
+    });
+    console.log(getSession("user"));
+    console.log("isAutheticated");
+    response = true;
+  }
 
   return response;
 };

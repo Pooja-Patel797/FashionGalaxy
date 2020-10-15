@@ -26,22 +26,25 @@ export const SignIn = (props: any) => {
   };
 
   const handleSubmit = async () => {
-    await authUser({ email: email.value, password: password.value })
-      .then((res) => {
-        if (res) {
-          dispatch({
-            type: "LOGIN_USER",
-            user: getSession("user"),
-          });
-          props.history.push("/");
-        } else {
-          window.alert("Invalid credentials");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        window.alert("Something went wrong");
+    try {
+      let res = await authUser({
+        email: email.value,
+        password: password.value,
       });
+
+      if (res) {
+        dispatch({
+          type: "LOGIN_USER",
+          user: getSession("user"),
+        });
+        props.history.push("/");
+      } else {
+        window.alert("Invalid credentials");
+      }
+    } catch (err) {
+      console.log(err);
+      window.alert("Something went wrong");
+    }
   };
 
   const classes = useStyles();

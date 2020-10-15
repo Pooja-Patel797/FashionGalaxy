@@ -43,6 +43,16 @@ export class UsersController extends BaseHttpController {
     const statusCode = 200;
     return this.json(content, statusCode);
   }
+  @httpGet("/verify/:email")
+  public async getUserByEmail(
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ): Promise<JsonResult> {
+    const content = await this.usersService.getUserByEmail(req.params.email);
+    const statusCode = 200;
+    return this.json(content, statusCode);
+  }
 
   @httpGet("/:email/:password")
   public async getUserByEmailAndPassword(
@@ -64,7 +74,7 @@ export class UsersController extends BaseHttpController {
     res: express.Response,
     next: express.NextFunction
   ): Promise<JsonResult> {
-    const content = await this.usersService.createUser(req.body);
+    const content = await this.usersService.createUserIfNotExists(req.body);
     const statusCode = 201;
     return this.json(content, statusCode);
   }

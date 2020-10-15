@@ -8,7 +8,7 @@ import React from "react";
 
 interface PropsEmail {
   classes: Record<any, string>;
-  validateEmail: (email: string) => string | undefined;
+  validateEmail: (email: string) => string | boolean;
   setEmail: React.Dispatch<
     React.SetStateAction<{
       value: string;

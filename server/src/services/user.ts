@@ -16,9 +16,19 @@ export class UsersService {
       });
   }
 
-  public async getUser(id: string): Promise<IUser[]> {
-    return User.find({ _id: id })
-      .then((data: IUser[]) => {
+  public async getUser(id: string): Promise<IUser | null> {
+    return User.findOne({ _id: id })
+      .then((data) => {
+        return data;
+      })
+      .catch((error: Error) => {
+        throw error;
+      });
+  }
+  public async getUserByEmail(email: string): Promise<IUser | null> {
+    console.log("Hiii");
+    return User.findOne({ email: email })
+      .then((data) => {
         return data;
       })
       .catch((error: Error) => {
@@ -28,9 +38,10 @@ export class UsersService {
   public async getUserByEmailAndPassword(
     email: string,
     password: string
-  ): Promise<IUser[]> {
-    return User.find({ email: email, password: password })
-      .then((data: IUser[]) => {
+  ): Promise<IUser | null> {
+    return User.findOne({ email: email, password: password })
+      .then((data) => {
+        console.log(data);
         return data;
       })
       .catch((error: Error) => {
@@ -38,14 +49,17 @@ export class UsersService {
       });
   }
 
-  public async createUser(user: any): Promise<IUser> {
-    return User.create(user)
-      .then((data: IUser) => {
-        return data;
-      })
-      .catch((error: Error) => {
-        throw error;
-      });
+  public async createUserIfNotExists(user: any): Promise<IUser | null> {
+    let data = await this.getUserByEmail(user.email);
+    if (data === null) {
+      return User.create(user)
+        .then((data: IUser) => {
+          return data;
+        })
+        .catch((error: Error) => {
+          throw error;
+        });
+    } else return null;
   }
 
   public async updateUser(id: string, user: any): Promise<IUser> {
