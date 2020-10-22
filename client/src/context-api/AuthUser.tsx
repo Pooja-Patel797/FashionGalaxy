@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { getSession, setSession } from "../utils/SesssionStorage";
-import { SignIn } from "../components/account/SignIn";
-import { IUser } from "../interfaces/UserInterface";
+import React, { useState, useEffect, useContext } from "react";
+import { StateContext } from "../stateprovider/stateprovider";
 
 interface IAuthUser {}
 
@@ -9,8 +7,9 @@ export const AuthUserContext: any = React.createContext([{}, () => {}]);
 
 export const AuthUser = (props: any) => {
   const [isAuthenticated, setAuthentication] = useState(() => {
-    const localData = getSession("user");
-    return localData.isAuthenticated == null ? false : true;
+    const [state, dispatch] = useContext(StateContext);
+
+    return state.isAuthenticated == null ? false : true;
   });
 
   const setAuth = (value: any) => {

@@ -9,25 +9,25 @@ import {
 import { inject } from "inversify";
 import * as express from "express";
 import { JsonResult } from "inversify-express-utils/dts/results";
-import { CommentsService } from "../services/comment";
+import { CartsService } from "../services/cart";
 
 import TYPES from "../constant/types";
 
-@controller("/comments")
-export class CommentsController extends BaseHttpController {
+@controller("/carts")
+export class CartsController extends BaseHttpController {
   constructor(
-    @inject(TYPES.CommentsService) private CommentsService: CommentsService
+    @inject(TYPES.CartsService) private CartsService: CartsService
   ) {
     super();
   }
- 
+
   @httpGet("/")
-  public async getComments(
+  public async getCarts(
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
   ): Promise<JsonResult> {
-    const content = await this.CommentsService.getComments();
+    const content = await this.CartsService.getCarts();
     const statusCode = 200;
     return this.json(content, statusCode);
   }
@@ -38,7 +38,7 @@ export class CommentsController extends BaseHttpController {
     res: express.Response,
     next: express.NextFunction
   ): Promise<JsonResult> {
-    const content = await this.CommentsService.getCommentsById(req.params.pid);
+    const content = await this.CartsService.getCart(req.params.pid);
     const statusCode = 200;
     return this.json(content, statusCode);
   }
@@ -50,7 +50,7 @@ export class CommentsController extends BaseHttpController {
     next: express.NextFunction
   ): Promise<JsonResult> {
     console.log("Inside controller");
-    const content = await this.CommentsService.createComment(req.body);
+    const content = await this.CartsService.createOrUpdateCart(req.body);
     const statusCode = 201;
     return this.json(content, statusCode);
   }
@@ -61,7 +61,7 @@ export class CommentsController extends BaseHttpController {
     res: express.Response,
     next: express.NextFunction
   ): Promise<JsonResult> {
-    const content = await this.CommentsService.updateComment(
+    const content = await this.CartsService.updateCart(
       req.params.id,
       req.body
     );
@@ -75,7 +75,7 @@ export class CommentsController extends BaseHttpController {
     res: express.Response,
     next: express.NextFunction
   ): Promise<JsonResult> {
-    const content = await this.CommentsService.deleteComment(req.params.id);
+    const content = await this.CartsService.deleteCart(req.params.id);
     const statusCode = 200;
     return this.json(content, statusCode);
   }

@@ -1,7 +1,7 @@
 import axios from "axios";
 type Comment = {
-  userId: string;
-  productId: string;
+  user: string;
+  product: string;
 
   comment: string | null;
   rating: number | null;

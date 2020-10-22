@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { Header } from "../Header";
-import { Footer } from "../Footer";
+import { Header } from "../header";
+import { Footer } from "../footer";
 
 export const Layout = (props: any) => {
   useEffect(() => {

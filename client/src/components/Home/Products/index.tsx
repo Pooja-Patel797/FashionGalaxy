@@ -11,15 +11,16 @@ import {
   CardActions,
   IconButton,
 } from "@material-ui/core";
-import Product from "../../../common/ProductDetailList";
+import Product from "../../../common/productdetaillist";
 import { useStyles } from "./style";
-import { StarRating } from "../StarRating";
+import { StarRating } from "../starRating";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
-import { Link } from "react-router-dom";
-import { ProductSizes } from "../ProductSize";
-import { StateContext } from "../../../StateProvider/StateProvider";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { ProductSizes } from "../productSize";
+import { StateContext } from "../../../stateprovider/stateprovider";
 import { getAllProducts } from "../../../api/product";
+import { createCart } from "../../../api/cart";
+import { AddToCart } from "../../../utils/availthecart";
 
 export const Products = () => {
   const classes = useStyles();
@@ -36,21 +37,24 @@ export const Products = () => {
     })();
   }, []);
 
-  const addToCart = (id: string) => {
-    if (state.user !== null) {
-      if (size === "") {
-        window.alert("please select size");
-      } else {
-        console.log("product size");
-        console.log(size);
+  const addToCart = async (id: string) => {
+    if (size === "") {
+      window.alert("please select size");
+    } else {
+      let item = { productId: id, size: size };
+      if (state.isAuthenticated) {
+        // AddToCart(item);
         dispatch({
           type: "ADD_TO_CART",
-          item: { id: id, size: size },
+          item: AddToCart(item),
         });
-        setSize("");
+      } else {
+        dispatch({
+          type: "ADD_TO_CART",
+          item: item,
+        });
       }
-    } else {
-      history.push("/SignIn");
+      setSize("");
     }
   };
 

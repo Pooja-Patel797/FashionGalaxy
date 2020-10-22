@@ -1,13 +1,19 @@
-import React, { createContext, useReducer } from "react";
-import { initialState } from "../Reducers/Reducer";
+import React, { createContext, useReducer, useEffect } from "react";
+import { getInitialState } from "../reducers/reducer";
 
 export const StateContext: any = createContext({
-  state: initialState,
+  state: getInitialState(),
   dispatch: () => {},
 });
 
-export const StateProvider = ({ reducer, initialState, children }: any) => (
-  <StateContext.Provider value={useReducer(reducer, initialState)}>
-    {children}
-  </StateContext.Provider>
-);
+export const StateProvider = ({ reducer, initialState, children }: any) => {
+  useEffect(() => {
+    console.log("Redered stateProvider");
+  });
+
+  return (
+    <StateContext.Provider value={useReducer(reducer, initialState)}>
+      {children}
+    </StateContext.Provider>
+  );
+};

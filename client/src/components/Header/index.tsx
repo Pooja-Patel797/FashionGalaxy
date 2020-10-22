@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { CssBaseline, AppBar, Box, InputBase } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import SearchIcon from "@material-ui/icons/Search";
@@ -6,23 +6,43 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { useStyles } from "./style";
-import { StateContext } from "../../StateProvider/StateProvider";
-import { DropDown } from "./DropDown";
+import { StateContext } from "../../stateprovider/stateprovider";
+import { DropDown } from "./dropDown";
+import { getLocalStorage } from "../../utils/localstorage";
+import { getCartById } from "../../api/cart";
 
 export const Header = () => {
   console.log("In header");
 
   const [state, dispatch] = useContext(StateContext);
   const [anchorEl, setAnchorEl] = React.useState();
+  const [cart, setCart] = useState([]);
 
   const classes = useStyles();
 
-  const getCartlength = () => {
-    return state.cart.length;
+  useEffect(() => {
+    if (state.isAuthenticated) {
+      const id = getLocalStorage("user").userId;
+      (async () => {
+        let res = await getCartById(id);
+        console.log("---->");
+        console.log(res);
+        setCart(res);
+        console.log("useEffect$$$$$$$44");
+        console.log(cart);
+      })();
+    }
+  }, [dispatch, state]);
+
+  let getCartLength = () => {
+    if (state.isAuthenticated) return cart.length;
+    else return state.cart.length;
   };
+
   const getUserName = () => {
-    if (state.user != null) {
-      return "hello " + state.user.username;
+    console.log(state.isAuthenticated);
+    if (state.isAuthenticated) {
+      return "hello " + getLocalStorage("user").username;
     } else {
       return "hello guest!!";
     }
@@ -91,7 +111,7 @@ export const Header = () => {
             <Link className={classes.link} to="/Cart">
               <Box className={classes.cart}>
                 <Box className={classes.notificationIcon}>
-                  <strong>{getCartlength()}</strong>
+                  <strong>{getCartLength()}</strong>
                 </Box>
                 <ShoppingCartIcon
                   className={classes.carticon}

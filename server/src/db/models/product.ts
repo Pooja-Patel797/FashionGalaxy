@@ -20,35 +20,8 @@ const ProductSchema: Schema = new Schema(
       },
     ],
     category: { type: Schema.Types.String },
-    // dateOfCreation: {
-    //   type: Schema.Types.Date,
-
-    //   default: Date.now,
-    // },
-
-    // dateOfModification: {
-    //   type: Schema.Types.Date,
-
-    //   default: Date.now,
-    // },
+    comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
   },
   { timestamps: true }
 );
 export const Product = mongoose.model<IProduct>("Product", ProductSchema);
-// title: string;
-// description: string;
-// brand: string;
-// price: number;
-// quantity: number;
-// discount: number;
-// offers: string;
-// imageUrl: ImgUrl;
-// rating: number;
-// size: Array<string>;
-// dateOfCreation: Date;
-// dateOfModification: Date;
-// type ImgUrl = {
-//     cardImage: string;
-//     gridImage: Array<string>;
-//     backdropImage: Array<string>;
-//   };

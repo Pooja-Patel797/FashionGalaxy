@@ -5,6 +5,7 @@ import "./controllers/homeController";
 import "./controllers/userController";
 import "./controllers/productController";
 import "./controllers/commentController";
+import "./controllers/cartController";
 import { DbConnection } from "./db/utils/db.connection";
 import { ContainerConfigLoader } from "./config/container";
 

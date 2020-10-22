@@ -45,14 +45,15 @@ export const useStyles = makeStyles({
   },
 
   notificationIcon: {
-    backgroundColor: "#ff3333",
-    fontSize: "1vw",
+    // backgroundColor: "#ff3333",
+    fontSize: "1.3vw",
     width: "1.5vw",
     height: "1.5vw",
+
     // marginTop: "-1.5vw",
     borderRadius: "50%",
     textAlign: "center",
-    marginLeft: "20px",
+    marginLeft: "1vw",
   },
   username: {
     fontSize: "12px",

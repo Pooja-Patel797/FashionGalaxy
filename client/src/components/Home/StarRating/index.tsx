@@ -1,7 +1,7 @@
 import React from "react";
 import { useStyles } from "./style";
 import Rating from "@material-ui/lab/Rating";
-import Product from "../../../common/ProductDetailList";
+import Product from "../../../common/productdetaillist";
 
 interface RatingProps {
   rating: number;

@@ -8,16 +8,7 @@ const UserSchema: Schema = new Schema(
     password: { type: Schema.Types.String, required: true },
     isStatus: { type: Schema.Types.String, required: true },
     roleId: { type: Schema.Types.String, required: true },
-    // dateOfCreation: {
-    //   type: Schema.Types.Date,
-
-    //   default: Date.now,
-    // },
-    // dateOfModification: {
-    //   type: Schema.Types.Date,
-
-    //   default: Date.now,
-    // },
+    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
   },
   { timestamps: true }
 );

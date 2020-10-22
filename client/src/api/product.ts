@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IUser } from "../interfaces/UserInterface";
+import { IUser } from "../interfaces/uerInterface";
 
 export const getAllProducts = async () => {
   let result;

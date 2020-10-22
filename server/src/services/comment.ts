@@ -5,56 +5,50 @@ import { Error, default as mongoose } from "mongoose";
 
 @injectable()
 export class CommentsService {
-  public async getComments(): Promise<IComment[]> {
+  public getComments = async (): Promise<IComment[]> => {
     console.log("ingetComments");
-    return Comment.find()
-      .then((data: IComment[]) => {
-        return data;
-      })
-      .catch((error: Error) => {
-        throw error;
-      });
-  }
+    try {
+      return await Comment.find().populate('user');
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  };
 
-  public async getCommentsById(id: string): Promise<IComment[]> {
-    return Comment.find({ productId: id })
-      .then((data: IComment[]) => {
-        return data;
-      })
-      .catch((error: Error) => {
-        throw error;
-      });
-  }
+  public getCommentsById = async (pid: string): Promise<IComment[]> => {
+    try{
+    return await Comment.find({ product: pid });
+    }catch(err){
+      throw err;
+    }
+  };
 
-  public async createComment(comment: any): Promise<IComment> {
-    return Comment.create(comment)
-      .then((data: IComment) => {
-        console.log(data._id);
+  public createComment = async (comment: any): Promise<IComment> => {
+    try {
+      return await Comment.create(comment);
+    } catch (err) {
+      throw err;
+    }
+  };
 
-        return data;
-      })
-      .catch((error: Error) => {
-        throw error;
+  public updateComment = async (
+    id: string,
+    comment: any
+  ): Promise<IComment | null> => {
+    try {
+      return await Comment.findOneAndUpdate({ _id: id }, comment, {
+        new: true,
       });
-  }
+    } catch (err) {
+      throw err;
+    }
+  };
 
-  public async updateComment(id: string, comment: any): Promise<IComment> {
-    return Comment.findOneAndUpdate({ _id: id }, comment, { new: true })
-      .then((data: any) => {
-        return data;
-      })
-      .catch((error: Error) => {
-        throw error;
-      });
-  }
-
-  public async deleteComment(id: string): Promise<boolean> {
-    return Comment.findOneAndDelete({ _id: id })
-      .then(() => {
-        return true;
-      })
-      .catch((error: Error) => {
-        throw error;
-      });
-  }
+  public deleteComment = async (id: string): Promise<IComment | null> => {
+    try {
+      return await Comment.findOneAndDelete({ _id: id });
+    } catch (err) {
+      throw err;
+    }
+  };
 }

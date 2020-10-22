@@ -4,7 +4,7 @@ import { useStyles } from "./style";
 import { ProductComments } from "./productComments";
 import { WriteComment } from "./writeComments";
 import { getCommentsById } from "../../../api/comment";
-import { getSession } from "../../../utils/SesssionStorage";
+import { getLocalStorage } from "../../../utils/localstorage";
 
 let initialComment = {
   comment: "",
@@ -26,7 +26,7 @@ export const Comment = (props: Iprops) => {
   };
 
   let getCommentBox = () => {
-    let user = getSession("user");
+    let user = getLocalStorage("user");
     console.log("Heu user");
     console.log(user);
     if (user) {

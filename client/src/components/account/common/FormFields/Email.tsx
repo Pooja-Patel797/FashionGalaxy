@@ -22,7 +22,7 @@ interface PropsEmail {
   };
 }
 
-export const Email: React.FC<PropsEmail> = (props) => {
+export const Email: React.FC<PropsEmail> = (props: PropsEmail) => {
   return (
     <React.Fragment>
       <FormControl className={props.classes.formcontrol}>

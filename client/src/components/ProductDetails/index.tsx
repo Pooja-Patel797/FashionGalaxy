@@ -6,16 +6,16 @@ import {
   Button,
   Backdrop,
 } from "@material-ui/core";
-import { ProductSizes } from "../Home/ProductSize";
+import { ProductSizes } from "../home/productSize";
 import { useStyles } from "./style";
-import { StarRating } from "../Home/StarRating";
-
+import { StarRating } from "../home/starRating";
+import { createCart } from "../../api/cart";
 import { RouteComponentProps } from "react-router-dom";
-import { StateContext } from "../../StateProvider/StateProvider";
+import { StateContext } from "../../stateprovider/stateprovider";
 import { useHistory } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import { getProduct } from "../../api/product";
-import Product, { initialProduct } from "../../common/ProductDetailList";
+import Product, { initialProduct } from "../../common/productdetaillist";
 import { Comment } from "./comment";
 type TParams = { id: any };
 
@@ -39,19 +39,17 @@ export const ProductDetails = ({ match }: RouteComponentProps<TParams>) => {
     })();
   }, []);
 
-  let addToCart = (id: string) => {
-    if (state.user !== null) {
-      if (size !== "") {
-        dispatch({
-          type: "ADD_TO_CART",
-          item: { id: id, size: size },
-        });
-        setSize("");
-      } else {
-        window.alert("Please select the size");
-      }
+  const addToCart = async (id: string) => {
+    if (size === "") {
+      window.alert("please select size");
     } else {
-      history.push("/SignIn");
+      console.log("product size");
+      console.log(size);
+      dispatch({
+        type: "ADD_TO_CART",
+        item: [{ productId: id, size: size }],
+      });
+      setSize("");
     }
   };
 

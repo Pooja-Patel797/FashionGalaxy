@@ -4,6 +4,7 @@ import { UsersService } from "../services/user";
 import TYPES from "../constant/types";
 import { ProductsService } from "../services/product";
 import { CommentsService } from "../services/comment";
+import {CartsService} from "../services/cart";
 
 export class ContainerConfigLoader {
   public static Load(): Container {
@@ -12,6 +13,7 @@ export class ContainerConfigLoader {
     container.bind<UsersService>(TYPES.UsersService).to(UsersService);
     container.bind<ProductsService>(TYPES.ProductsService).to(ProductsService);
     container.bind<CommentsService>(TYPES.CommentsService).to(CommentsService);
+    container.bind<CartsService>(TYPES.CartsService).to(CartsService);
 
     return container;
   }

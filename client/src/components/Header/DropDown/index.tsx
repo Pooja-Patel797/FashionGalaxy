@@ -1,8 +1,9 @@
 import React, { useContext } from "react";
 import { Paper, Menu, MenuItem, Box } from "@material-ui/core";
-import { StateContext } from "../../../StateProvider/StateProvider";
+import { StateContext } from "../../../stateprovider/stateprovider";
 import { useStyles } from "./style";
 import { Link } from "react-router-dom";
+import { getLocalStorage } from "../../../utils/localstorage";
 
 export interface PropsDropDown {
   AnchorEL: React.FormEvent<HTMLInputElement>;
@@ -26,12 +27,12 @@ export const DropDown = (props: any) => {
   };
 
   const getMenu = () => {
-    if (state.user != null) {
+    if (state.isAuthenticated) {
       console.log("in menu if");
       return (
         <Box>
           <MenuItem>
-            <strong>{"Welcome " + state.user.username}</strong>
+            <strong>{"Welcome " + getLocalStorage("user").username}</strong>
           </MenuItem>
           <hr></hr>
           <MenuItem>My account</MenuItem>

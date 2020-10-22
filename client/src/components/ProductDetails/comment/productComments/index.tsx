@@ -1,6 +1,6 @@
 import { Box, List, ListItem, Typography } from "@material-ui/core";
 import { useStyles } from "./style";
-import { StarRating } from "../../../Home/StarRating";
+import { StarRating } from "../../../home/starRating";
 import React, { useEffect, useState } from "react";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 

@@ -1,5 +1,5 @@
 import { searchUser } from "../api/users";
-import { setSession, getSession } from "../utils/SesssionStorage";
+import { setLocalStorage, getLocalStorage } from "../utils/localstorage";
 
 export interface ICredentials {
   email: string;
@@ -18,14 +18,14 @@ export const authUser = async (props: ICredentials) => {
   else {
     console.log("inside authuser");
     console.log(data);
-    setSession("user", {
+
+    setLocalStorage("user", {
       userId: data._id,
       emailId: props.email,
       username: data.name,
-      isAuthenticated: true,
     });
-    console.log(getSession("user"));
-    console.log("isAutheticated");
+
+    console.log(getLocalStorage("user"));
     response = true;
   }
 

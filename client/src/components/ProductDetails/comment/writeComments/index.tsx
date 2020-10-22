@@ -3,7 +3,7 @@ import { TextField, Box, Button } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import { useStyles } from "./style";
 import { createComments } from "../../../../api/comment";
-import { getSession } from "../../../../utils/SesssionStorage";
+import { getLocalStorage } from "../../../../utils/localstorage";
 
 export const WriteComment = (props: any) => {
   const classes = useStyles();
@@ -11,12 +11,12 @@ export const WriteComment = (props: any) => {
   const [rating, setRating] = React.useState<number | null>(0);
 
   let handleSubmit = async (event: any) => {
-    let user = getSession("user");
+    let userinfo = getLocalStorage("user");
 
     event.preventDefault();
     await createComments({
-      userId: user.userId,
-      productId: props.pid,
+      user: userinfo.userId,
+      product: props.pid,
       comment: comment,
       rating: rating,
     });

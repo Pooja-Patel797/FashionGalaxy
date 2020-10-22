@@ -14,14 +14,14 @@ export const Password = (props: any) => {
         <Input
           id="my-pass"
           aria-describedby="my-helper-text"
-          onChange={(event) => {
+          onChange={(event: any) => {
             props.onhandleChange(
               props.validatePassword,
               event,
               props.setPassword
             );
           }}
-          onBlur={(event) => {
+          onBlur={(event: any) => {
             props.onhandleChange(
               props.validatePassword,
               event,

@@ -5,56 +5,49 @@ import { Error, default as mongoose } from "mongoose";
 
 @injectable()
 export class ProductsService {
-  public async getProducts(): Promise<IProduct[]> {
+  public getProducts = async (): Promise<IProduct[]> => {
     console.log("ingetProducts");
-    return Product.find()
-      .then((data: IProduct[]) => {
-        return data;
-      })
-      .catch((error: Error) => {
-        throw error;
-      });
-  }
+    try {
+      return await Product.find().populate("comments");
+    } catch (err) {
+      throw err;
+    }
+  };
 
-  public async getProduct(id: string): Promise<IProduct[]> {
-    return Product.find({ _id: id })
-      .then((data: IProduct[]) => {
-        return data;
-      })
-      .catch((error: Error) => {
-        throw error;
-      });
-  }
+  public getProduct = async (id: string): Promise<IProduct[]> => {
+    try {
+      return await Product.find({ _id: id });
+    } catch (err) {
+      throw err;
+    }
+  };
 
-  public async createProduct(product: any): Promise<IProduct> {
-    return Product.create(product)
-      .then((data: IProduct) => {
-        console.log(data._id);
+  public createProduct = async (product: any): Promise<IProduct> => {
+    try {
+      return await Product.create(product);
+    } catch (err) {
+      throw err;
+    }
+  };
 
-        return data;
-      })
-      .catch((error: Error) => {
-        throw error;
+  public updateProduct = async (
+    id: string,
+    product: any
+  ): Promise<IProduct | null> => {
+    try {
+      return await Product.findOneAndUpdate({ _id: id }, product, {
+        new: true,
       });
-  }
+    } catch (err) {
+      throw err;
+    }
+  };
 
-  public async updateProduct(id: string, product: any): Promise<IProduct> {
-    return Product.findOneAndUpdate({ _id: id }, product, { new: true })
-      .then((data: any) => {
-        return data;
-      })
-      .catch((error: Error) => {
-        throw error;
-      });
-  }
-
-  public async deleteProduct(id: string): Promise<boolean> {
-    return Product.findOneAndDelete({ _id: id })
-      .then(() => {
-        return true;
-      })
-      .catch((error: Error) => {
-        throw error;
-      });
-  }
+  public deleteProduct = async (id: string): Promise<IProduct | null> => {
+    try {
+      return await Product.findOneAndDelete({ _id: id });
+    } catch (err) {
+      throw err;
+    }
+  };
 }

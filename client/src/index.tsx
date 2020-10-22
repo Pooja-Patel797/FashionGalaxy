@@ -2,14 +2,14 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
-import { RouteComponent } from "./RouteComponent";
-import { initialState, reducer } from "./Reducers/Reducer";
-import { StateProvider } from "./StateProvider/StateProvider";
+import { App } from "./app";
+import { getInitialState, reducer } from "./reducers/reducer";
+import { StateProvider } from "./stateprovider/stateprovider";
 
 ReactDOM.render(
   // React.createElement(RouteComponent),
-  <StateProvider initialState={initialState} reducer={reducer}>
-    <RouteComponent />
+  <StateProvider initialState={getInitialState()} reducer={reducer}>
+    <App />
   </StateProvider>,
   document.getElementById("root")
 );

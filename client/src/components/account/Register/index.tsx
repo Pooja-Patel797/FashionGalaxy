@@ -2,12 +2,12 @@ import { FormLayout } from "../index";
 import React, { useState } from "react";
 import { useStyles } from "./style";
 import { Button, CssBaseline } from "@material-ui/core";
-import { Username, Email, Password } from "../common/FormFields";
+import { Username, Email, Password } from "../common/formfields";
 import {
   validateEmail,
   validateUsername,
   validatePassword,
-} from "../common/Validation";
+} from "../common/validation";
 import { addUser } from "../../../api/users";
 import { History } from "history";
 import { FieldObject } from "../interface";

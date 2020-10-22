@@ -3,21 +3,10 @@ import mongoose, { Schema, Document } from "mongoose";
 
 const CommentSchema: Schema = new Schema(
   {
-    userId: { type: Schema.Types.ObjectId, required: true },
-    productId: { type: Schema.Types.ObjectId, required: true },
+    user: { type: Schema.Types.ObjectId, required: true, ref: "User" },
+    product: { type: Schema.Types.ObjectId, required: true, ref: "Product" },
     comment: { type: Schema.Types.String, required: true },
     rating: { type: Schema.Types.Number, required: true },
-    // dateOfCreation: {
-    //   type: Schema.Types.Date,
-
-    //   default: Date.now,
-    // },
-
-    // dateOfModification: {
-    //   type: Schema.Types.Date,
-
-    //   default: Date.now,
-    // },
   },
   { timestamps: true }
 );

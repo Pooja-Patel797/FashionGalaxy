@@ -1,13 +1,15 @@
 import { CssBaseline, Button } from "@material-ui/core";
 import React, { useState, useContext, useEffect } from "react";
 import { useStyles } from "./style";
-import { validateEmail, validatePassword } from "../common/Validation";
+import { validateEmail, validatePassword } from "../common/validation";
 import { FormLayout } from "../index";
-import { Email, Password } from "../common/FormFields";
+import { Email, Password } from "../common/formfields";
 import { authUser } from "../../../authorization/auth";
-import { StateContext } from "../../../StateProvider/StateProvider";
-import { getSession } from "../../../utils/SesssionStorage";
+import { StateContext } from "../../../stateprovider/stateprovider";
+import { isCartExists } from "../../../utils/availthecart";
 import { FieldObject } from "../interface";
+import { getLocalStorage } from "../../../utils/localstorage";
+import { createCart } from "../../../api/cart";
 
 export const SignIn = (props: any) => {
   let fieldobject: FieldObject = { value: "", error: "" };
@@ -35,15 +37,20 @@ export const SignIn = (props: any) => {
       if (res) {
         dispatch({
           type: "LOGIN_USER",
-          user: getSession("user"),
+          isAuthenticated: true,
         });
+        if (await isCartExists()) {
+          dispatch({
+            type: "EMPTY_CART",
+          });
+        }
         props.history.push("/");
       } else {
         window.alert("Invalid credentials");
       }
     } catch (err) {
       console.log(err);
-      window.alert("Something went wrong");
+      window.alert(err);
     }
   };
 
@@ -68,7 +75,7 @@ export const SignIn = (props: any) => {
           />
           <Button
             className={classes.button}
-            onClick={(event) => handleSubmit()}
+            onClick={(event: any) => handleSubmit()}
             variant="outlined"
           >
             Login
