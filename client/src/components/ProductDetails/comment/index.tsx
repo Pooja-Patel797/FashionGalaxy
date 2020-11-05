@@ -3,30 +3,25 @@ import { Box } from "@material-ui/core";
 import { useStyles } from "./style";
 import { ProductComments } from "./productComments";
 import { WriteComment } from "./writeComments";
-import { getCommentsById } from "../../../api/comment";
+import IComment, { getCommentsById } from "../../../api/comment";
 import { getLocalStorage } from "../../../utils/localstorage";
 
-let initialComment = {
-  comment: "",
-  rating: 0,
-};
-
-type Iprops = {
+type IProps = {
   pid: string;
 };
 
-export const Comment = (props: Iprops) => {
-  const [comments, setComments] = useState([]);
+export const Comment: React.FC<IProps> = (props) => {
+  const [comments, setComments] = useState<Array<IComment>>([]);
 
   const classes = useStyles();
 
-  let getProductComments = async (pid: string) => {
-    let data = await getCommentsById(pid);
+  const getProductComments = async (pid: string) => {
+    const data = await getCommentsById(pid);
     setComments(data);
   };
 
-  let getCommentBox = () => {
-    let user = getLocalStorage("user");
+  const getCommentBox = () => {
+    const user = getLocalStorage("user");
     console.log("Heu user");
     console.log(user);
     if (user) {
@@ -37,7 +32,7 @@ export const Comment = (props: Iprops) => {
   };
   useEffect(() => {
     getProductComments(props.pid);
-  }, []);
+  }, [props.pid]);
 
   return (
     <Box className={classes.flex}>

@@ -3,7 +3,7 @@ import React from "react";
 
 import { useStyles } from "./style";
 
-export const Footer = () => {
+export const Footer:React.FC = () => {
   const classes = useStyles();
   return (
     <React.Fragment>

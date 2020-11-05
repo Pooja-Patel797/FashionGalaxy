@@ -1,30 +1,33 @@
 import { getLocalStorage } from "./localstorage";
-import { createCart } from "../api/cart";
+import { createCart, ICart } from "../api/cart";
 
 type Product = {
   productId: string;
   size: string;
 };
 
-export const isCartExists = async () => {
-  let cart = getLocalStorage("fashiongalaxycart");
-  let cartData = {
-    userId: getLocalStorage("user").userId,
-    products: cart,
-  };
-  if (cart) {
-    console.log("cart data");
+export const isCartExists = async (): Promise<boolean> => {
+  const cart = getLocalStorage("fashiongalaxycart");
 
-    let data = await createCart(cartData);
+  console.log("iscartExists");
+
+  if (cart !== null) {
+    const cartData = {
+      userId: getLocalStorage("user").userId,
+      products: cart,
+    };
+    console.log("cart data");
+    console.log(cartData);
+    await createCart(cartData);
     return true;
   } else {
     return false;
   }
 };
 
-export const AddToCart = async (data: Product) => {
-  let userId = getLocalStorage("user").userId;
-  let cartData = { userId: userId, products: [data] };
-  let res = await createCart(cartData);
-  res.data;
+export const AddToCart = async (data: Product): Promise<ICart> => {
+  const userId = getLocalStorage("user").userId;
+  const cartData = { userId: userId, products: [data] };
+  const res = await createCart(cartData);
+  return res;
 };

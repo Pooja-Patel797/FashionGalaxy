@@ -1,35 +1,16 @@
-export default interface Product {
-  _id: string;
-  title: string;
-  description: string;
-  imageUrl: [
-    {
-      cardImage: string;
-      gridImage: Array<string>;
-      backdropImage: Array<string>;
-    }
-  ];
-  category: String;
-  price: number;
-  brand: string;
-  size: Array<string>;
-  rating: number;
-  discount: number;
-  offers: string;
-  quantity: number;
-}
+
 
 export const initialProduct = {
   _id: "",
   title: "",
   description: "",
-  imageUrl: [
+  imageUrl: 
     {
-      cardimage: "",
+      cardImage: "",
       gridImage: [""],
       backdropImage: [""],
     },
-  ],
+  
   category: "",
   price: 0,
   brand: "",

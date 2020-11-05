@@ -1,18 +1,27 @@
 import { Product } from "../db/models/product";
 import { IProduct } from "../interfaces";
 import { injectable } from "inversify";
-import { Error, default as mongoose } from "mongoose";
+
 
 @injectable()
 export class ProductsService {
   public getProducts = async (): Promise<IProduct[]> => {
     console.log("ingetProducts");
     try {
-      return await Product.find().populate("comments");
+      return await Product.find();
     } catch (err) {
       throw err;
     }
   };
+ 
+    public getProductsByIds = async (ids:any): Promise<IProduct[]> => {
+      console.log("ingetProducts");
+      try {
+        return await Product.find({ "_id": { "$in": ids } });
+      } catch (err) {
+        throw err;
+      }
+    };
 
   public getProduct = async (id: string): Promise<IProduct[]> => {
     try {

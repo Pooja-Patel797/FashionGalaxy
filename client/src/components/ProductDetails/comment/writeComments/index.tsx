@@ -5,13 +5,19 @@ import { useStyles } from "./style";
 import { createComments } from "../../../../api/comment";
 import { getLocalStorage } from "../../../../utils/localstorage";
 
-export const WriteComment = (props: any) => {
+interface IWriteComment {
+  pid: string;
+  getProductComments: (pid: string) => Promise<void>;
+}
+export const WriteComment: React.FC<IWriteComment> = (props) => {
   const classes = useStyles();
   const [comment, setComment] = React.useState<string | null>(" ");
   const [rating, setRating] = React.useState<number | null>(0);
 
-  let handleSubmit = async (event: any) => {
-    let userinfo = getLocalStorage("user");
+  const handleSubmit = async (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    const userinfo = getLocalStorage("user");
 
     event.preventDefault();
     await createComments({

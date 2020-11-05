@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 
-export const useStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles({
   gridList: {
     display: "grid",
     marginTop: "5vw",
@@ -41,4 +41,4 @@ export const useStyles = makeStyles((theme) => ({
     fontSize: "1vw !important",
     color: "red",
   },
-}));
+});

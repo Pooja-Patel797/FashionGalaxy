@@ -6,27 +6,23 @@ import { ProductDetails } from "./components/productdetails";
 import { Home } from "./components/home";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Layout } from "./components/layout";
-// import { CartProvider } from "./context-api/CartProvider";
-import { StateContext } from "./stateprovider/stateprovider";
+import { StateContext } from "./reducers/reducer";
 import { getLocalStorage } from "./utils/localstorage";
 
-export const App = () => {
-  const [state, dispatch] = useContext(StateContext);
+export const App: React.FC = () => {
+  const context = useContext(StateContext);
   useEffect(() => {
     const user = getLocalStorage("user");
-    console.log("------Authenticating...-------");
     if (user) {
-      console.log("**inside user***");
-      dispatch({
+      context.dispatch({
         type: "LOGIN_USER",
-        isAuthenticated: { isAuthenticated: true },
+        payload: { isAuthenticated: true },
       });
     }
   }, []);
 
   return (
     <Router>
-      {/* <CartProvider> */}
       <Layout>
         <Switch>
           <Route path="/" exact component={Home} />
@@ -36,7 +32,6 @@ export const App = () => {
           <Route path="/ProductDetail/:id" exact component={ProductDetails} />
         </Switch>
       </Layout>
-      {/* </CartProvider> */}
     </Router>
   );
 };

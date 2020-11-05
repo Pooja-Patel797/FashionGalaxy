@@ -1,17 +1,17 @@
-import React, { useContext, useEffect, useState } from "react";
-import { StateContext } from "../../stateprovider/stateprovider";
+import React, { useContext, useEffect } from "react";
+import { StateContext } from "../../reducers/reducer";
 import { Box, Typography, Select, MenuItem } from "@material-ui/core";
 import { v4 as uuid } from "uuid";
-import { ICart } from "../../interfaces/cartInterface";
-import { getProduct } from "../../api/product";
+import { getCartById, ICartProduct } from "../../api/cart";
+import { getProducts } from "../../api/product";
 import { useStyles } from "./style";
+import { getLocalStorage } from "../../utils/localstorage";
 
-export const Cart = () => {
+export const Cart: React.FC = () => {
   const classes = useStyles();
-  const [state, dispatch] = useContext(StateContext);
+  const context = useContext(StateContext);
   const [quantity, setQuantity] = React.useState(0);
-  const [product, setProduct] = useState({});
-  const cart = state.cart;
+  const cart = context.state.cart;
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setQuantity(event.target.value as number);
@@ -19,21 +19,35 @@ export const Cart = () => {
   };
 
   useEffect(() => {
-    (async () => {
-      cart.map((item: string) => {
-        // await getProduct(item.id);
-      });
-    })();
+    if (context.state.isAuthenticated) {
+      (async () => {
+        const res = await getCartById(getLocalStorage("user").userId);
+        if (res.length != 0) console.log(res);
+      })();
+    } else {
+      if (getLocalStorage("fashiongalaxycart") != null) {
+        const cartData = getLocalStorage("fashiongalaxycart");
+        const productIds: string[] = [];
+        let i = 0;
+        (async () => {
+          cartData.map((item: ICartProduct) => {
+            productIds[i++] = item.productId;
+          });
+          const res = await getProducts(JSON.stringify(productIds));
+          console.log(res);
+        })();
+      }
+    }
   });
   return (
     <Box className={classes.container}>
-      {cart.map((item: ICart) => (
+      {cart.map((item: ICartProduct) => (
         <Box className={classes.grid} key={uuid()}>
           <Box className={classes.grid__item1}>
             <img src="" alt="" />
           </Box>
           <Box className={classes.grid__item2}>
-            <Typography>{"Hiii"}</Typography>
+            <Typography>{item.productId}</Typography>
             <Typography></Typography>
             <Select
               labelId="demo-customized-select-label"

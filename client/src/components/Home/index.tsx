@@ -5,7 +5,7 @@ import { Products } from "./products";
 import { Carousel } from "./carousel";
 import { Brands } from "./brands";
 
-export const Home = () => {
+export const Home:React.FC = () => {
   const classes = useStyles();
   useEffect(() => {
     console.log("In home");

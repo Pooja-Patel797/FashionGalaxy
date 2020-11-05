@@ -1,86 +1,54 @@
-import { getLocalStorage, setLocalStorage } from "../utils/localstorage";
-import { deleteLocalStorage } from "../utils/localstorage";
-import { createCart } from "../api/cart";
+import React, { createContext, useReducer, useEffect } from "react";
+import combineReducers from "react-combine-reducers";
+import { UserReducer } from "./userreducer";
+import { CartReducer, getInitialState } from "./cartreducer";
+import { ICartProduct } from "../api/cart";
 
-export const getInitialState = () => {
-  let initialState;
-  let cart = getLocalStorage("fashiongalaxycart");
-  if (cart) initialState = { cart: cart, isAuthenticated: false };
-  else initialState = { cart: [], isAuthenticated: false };
-  return initialState;
-};
-
-interface State {
-  cart: [];
-  isAuthenticated: false;
-}
-type Product = {
-  productId: string;
-  size: string;
-};
-type ICart = {
-  userId: string;
-  products: Array<Product>;
-};
-type Actions = {
-  type:
-    | "ADD_TO_CART"
-    | "REMOVE_FROM_CART"
-    | "EMPTY_CART"
-    | "LOGIN_USER"
-    | "LOGOUT_USER";
-  item: { productId: string; size: string };
+type state = {
+  cart: ICartProduct[];
   isAuthenticated: boolean;
 };
 
-let setCart = async (data: ICart) => {
-  let cartdata = await createCart(data);
-  return cartdata;
+type Action = {
+  type: string;
+  payload: { cart?: ICartProduct; isAuthenticated?: boolean };
 };
 
-export const reducer = (state: State, action: Actions) => {
-  console.log(action);
+type StateReducer = (state: state, action: Action) => state;
 
-  switch (action.type) {
-    case "ADD_TO_CART": {
-      console.log("------>");
-      console.log(state.cart);
-      console.log(action.item);
-      if (!state.isAuthenticated) {
-        setLocalStorage("fashiongalaxycart", [...state.cart, action.item]);
-        return {
-          ...state,
-          cart: [...state.cart, action.item],
-        };
-      } else {
-        return {
-          ...state,
-          cart: action.item,
-        };
-      }
-    }
+export const [reducer, initialState] = combineReducers<StateReducer>({
+  cart: [CartReducer, getInitialState()],
+  isAuthenticated: [UserReducer, false],
+});
 
-    case "REMOVE_FROM_CART":
-      return {};
+export const StateContext = createContext<{
+  state: state;
+  dispatch: React.Dispatch<Action>;
+}>({
+  state: initialState,
+  dispatch: () => null,
+});
 
-    case "EMPTY_CART": {
-      deleteLocalStorage("fashiongalaxycart");
-      console.log("Deleted cart");
-      return { ...state, cart: [] };
-    }
+interface IProps {
+  reducer: StateReducer;
+  initialState: state;
+  children: React.ReactNode;
+}
 
-    case "LOGIN_USER": {
-      console.log("userAuthenticated");
-      return { ...state, isAuthenticated: action.isAuthenticated };
-    }
+export const StateProvider: React.FC<IProps> = ({
+  reducer,
+  initialState,
+  children,
+}: IProps) => {
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-    case "LOGOUT_USER": {
-      console.log("Deleted");
-      deleteLocalStorage("user");
-      return { ...state, isAuthenticated: false };
-    }
-
-    default:
-      return state;
-  }
+  useEffect(() => {
+    console.log(state);
+  });
+  return (
+    <StateContext.Provider value={{ state, dispatch }}>
+      {console.log(state)}
+      {children}
+    </StateContext.Provider>
+  );
 };

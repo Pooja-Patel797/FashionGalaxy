@@ -9,56 +9,72 @@ import {
 import { ProductSizes } from "../home/productSize";
 import { useStyles } from "./style";
 import { StarRating } from "../home/starRating";
-import { createCart } from "../../api/cart";
 import { RouteComponentProps } from "react-router-dom";
-import { StateContext } from "../../stateprovider/stateprovider";
-import { useHistory } from "react-router-dom";
+import { StateContext } from "../../reducers/reducer";
 import { v4 as uuid } from "uuid";
-import { getProduct } from "../../api/product";
-import Product, { initialProduct } from "../../common/productdetaillist";
+import IProduct, { getProduct } from "../../api/product";
+import { initialProduct } from "../../common/productdetaillist";
 import { Comment } from "./comment";
-type TParams = { id: any };
+import { AddToCart } from "../../utils/availthecart";
+import { setLocalStorage } from "../../utils/localstorage";
+import { ICartProduct } from "../../api/cart";
+type TParams = { id: string };
 
-export const ProductDetails = ({ match }: RouteComponentProps<TParams>) => {
-  const [state, dispatch] = useContext(StateContext);
-  const [open, setOpen] = useState(false);
-  const [size, setSize] = useState("");
-  const [rating, setRating] = useState(0);
+export const ProductDetails: React.FC<RouteComponentProps<TParams>> = ({
+  match,
+}) => {
+  const context = useContext(StateContext);
+  const [open, setOpen] = useState<boolean>(false);
+  const [cart, setCart] = useState<ICartProduct[]>([]);
+
   const [pid, setPID] = useState(0);
-  const [product, setProduct] = useState(initialProduct);
-  const history = useHistory();
+  const [product, setProduct] = useState<IProduct>(initialProduct);
   const classes = useStyles();
   const id = match.params.id;
+  let size = "";
 
   useEffect(() => {
     window.scrollTo(0, 0);
     (async () => {
-      let data = await getProduct(id);
+      const data = await getProduct(id);
       setProduct(data);
       console.log(product);
     })();
   }, []);
 
+  const setSize = (s: string) => {
+    size = s;
+  };
   const addToCart = async (id: string) => {
     if (size === "") {
       window.alert("please select size");
     } else {
-      console.log("product size");
-      console.log(size);
-      dispatch({
+      const item = { productId: id, size: size };
+      setCart([...cart, item]);
+      context.dispatch({
         type: "ADD_TO_CART",
-        item: [{ productId: id, size: size }],
+        payload: { cart: item },
       });
+      console.log("Added to product");
+      if (context.state.isAuthenticated) {
+        console.log("Yes its me");
+        AddToCart(item);
+      } else {
+        console.log("set localstoage");
+        console.log(context.state.cart);
+        setLocalStorage("fashiongalaxycart", cart);
+      }
       setSize("");
     }
+    console.log("THE END");
   };
 
-  let handleClick = (index: number) => {
+  const handleClick = (index: number) => {
     setPID(index);
     setOpen(true);
   };
 
-  let handleClose = () => {
+  const handleClose = () => {
     setOpen(false);
   };
 
@@ -66,13 +82,13 @@ export const ProductDetails = ({ match }: RouteComponentProps<TParams>) => {
     <Container className={classes.container}>
       <Box className={classes.grid}>
         <Box className={classes.imageWrapper}>
-          {product.imageUrl[0].gridImage.map((url: any, index: any) => (
+          {product.imageUrl.gridImage.map((url: string, index: number) => (
             <Box className={classes.imageWrapper__image} key={uuid()}>
               <img
                 className={classes.productImage}
                 src={url}
                 alt={url}
-                id={index}
+                id={JSON.stringify(index)}
                 onClick={() => handleClick(index)}
               />
             </Box>
@@ -84,8 +100,8 @@ export const ProductDetails = ({ match }: RouteComponentProps<TParams>) => {
           >
             <img
               className={classes.backdropProductImage}
-              src={product.imageUrl[0].backdropImage[pid]}
-              alt={product.imageUrl[0].backdropImage[pid]}
+              src={product.imageUrl.backdropImage[pid]}
+              alt={product.imageUrl.backdropImage[pid]}
             />
           </Backdrop>
         </Box>

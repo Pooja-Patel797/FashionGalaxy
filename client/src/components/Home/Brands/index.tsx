@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import { BrandList } from "../../../common/brandlist";
 import { useStyles } from "./style";
 import { v4 as uuid } from "uuid";
-export const Brands = () => {
+
+export const Brands:React.FC = () => {
   const classes = useStyles();
 
   return (

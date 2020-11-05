@@ -42,6 +42,19 @@ export class ProductsController extends BaseHttpController {
     const statusCode = 200;
     return this.json(content, statusCode);
   }
+  @httpGet("/list/:array")
+  public async getProductsByIds(
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ): Promise<JsonResult> {
+    let data=JSON.parse(req.params.array);
+    
+    console.log(data);
+    const content = await this.ProductsService.getProductsByIds(data);
+    const statusCode = 200;
+    return this.json(content, statusCode);
+  }
 
   @httpPost("/")
   public async createProduct(

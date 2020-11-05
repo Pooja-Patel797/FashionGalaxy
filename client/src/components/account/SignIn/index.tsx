@@ -5,45 +5,52 @@ import { validateEmail, validatePassword } from "../common/validation";
 import { FormLayout } from "../index";
 import { Email, Password } from "../common/formfields";
 import { authUser } from "../../../authorization/auth";
-import { StateContext } from "../../../stateprovider/stateprovider";
+import { StateContext } from "../../../reducers/reducer";
 import { isCartExists } from "../../../utils/availthecart";
 import { FieldObject } from "../interface";
-import { getLocalStorage } from "../../../utils/localstorage";
-import { createCart } from "../../../api/cart";
+import { History } from "history";
+import { deleteLocalStorage } from "../../../utils/localstorage";
 
-export const SignIn = (props: any) => {
-  let fieldobject: FieldObject = { value: "", error: "" };
+interface ISignIn {
+  history: History;
+}
+
+export const SignIn: React.FC<ISignIn> = (props) => {
+  const fieldobject: FieldObject = { value: "", response: "" };
   const [email, setEmail] = useState(fieldobject);
   const [password, setPassword] = useState(fieldobject);
-  const [state, dispatch] = useContext(StateContext);
+  const context = useContext(StateContext);
 
   const onhandleChange = (
     validator: (value: string) => string,
-    event: React.ChangeEvent<HTMLInputElement>,
-    setCredentials: any
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    setCredentials: React.Dispatch<React.SetStateAction<FieldObject>>
   ) => {
-    let value = event.target.value;
-    let result = validator(value);
-    setCredentials({ value: value, error: result });
+    const value = event.target.value;
+    const result = validator(value);
+    if (result !== "valid") setCredentials({ value: value, response: result });
+    else setCredentials({ value: value, response: "" });
   };
 
   const handleSubmit = async () => {
     try {
-      let res = await authUser({
+      const res = await authUser({
         email: email.value,
         password: password.value,
       });
 
       if (res) {
-        dispatch({
+        context.dispatch({
           type: "LOGIN_USER",
-          isAuthenticated: true,
+          payload: { isAuthenticated: true },
         });
         if (await isCartExists()) {
-          dispatch({
-            type: "EMPTY_CART",
+          context.dispatch({
+            type: "INITIALIZE_CART",
+            payload: {},
           });
         }
+        deleteLocalStorage("fashiongalaxycart");
         props.history.push("/");
       } else {
         window.alert("Invalid credentials");
@@ -53,6 +60,10 @@ export const SignIn = (props: any) => {
       window.alert(err);
     }
   };
+
+  useEffect(() => {
+    console.log("sigin");
+  });
 
   const classes = useStyles();
   return (
@@ -75,7 +86,7 @@ export const SignIn = (props: any) => {
           />
           <Button
             className={classes.button}
-            onClick={(event: any) => handleSubmit()}
+            onClick={() => handleSubmit()}
             variant="outlined"
           >
             Login

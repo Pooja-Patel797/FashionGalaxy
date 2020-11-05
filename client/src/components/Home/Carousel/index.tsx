@@ -6,7 +6,7 @@ import { ImageDetailList } from "../../../common/imagesforcarousel";
 let imgUrl: string = ImageDetailList[0].img_url;
 let imgkeyword: string = ImageDetailList[0].keyword;
 
-export const Carousel = () => {
+export const Carousel:React.FC = () => {
   const [imgId, setImgId] = useState(0);
 
   const classes = useStyles();
@@ -23,7 +23,7 @@ export const Carousel = () => {
     }
   };
   useEffect(() => {
-    let id = setInterval(changeImage, 2000);
+    const id = setInterval(changeImage, 2000);
 
     return function cleanup() {
       clearInterval(id);

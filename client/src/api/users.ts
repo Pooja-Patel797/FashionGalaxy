@@ -1,23 +1,24 @@
 import axios from "axios";
-import { IUser } from "../interfaces/uerInterface";
 
-export const addUser = async (user: IUser) => {
-  let result;
+export interface IUser {
+  _id ?: string;
+  name: string;
+  email: string;
+  password: string;
+}
 
-  result = await axios.post(`http://localhost:8000/users`, user);
+export const addUser = async (user: IUser): Promise<IUser> => {
+  const result = await axios.post(`http://localhost:8000/users`, user);
   return result.data;
 };
 
-export const searchUser = async (email: string, password: string) => {
-  let result;
-  result = await axios.get(
+export const searchUser = async (
+  email: string,
+  password: string
+): Promise<IUser | null> => {
+  const result = await axios.get(
     `http://localhost:8000/users/` + email + `/` + password
   );
   console.log(result);
-  let data = result.data;
-
-  if (data !== null) return data;
-  else return null;
+  return result.data;
 };
-
-//http://localhost:8000/api/user/poojapatel@gmail.com/pooja797

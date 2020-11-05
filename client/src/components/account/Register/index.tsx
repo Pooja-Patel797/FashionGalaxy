@@ -17,7 +17,7 @@ interface PropsRegister {
 }
 
 export const Register: React.FC<PropsRegister> = (props) => {
-  let fieldObject: FieldObject = { value: "", error: "" };
+  const fieldObject: FieldObject = { value: "", response: "" };
   const [user, setUser] = useState(fieldObject);
   const [email, setEmail] = useState(fieldObject);
   const [password, setPassword] = useState(fieldObject);
@@ -31,28 +31,28 @@ export const Register: React.FC<PropsRegister> = (props) => {
 
   const onhandleChange = (
     validator: (value: string) => string,
-    event: React.ChangeEvent<HTMLInputElement>,
-    setCredentials: (value: FieldObject) => void
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    setCredentials: React.Dispatch<React.SetStateAction<FieldObject>>
   ) => {
-    let value = event.target.value;
-    let result = validator(value);
-    setCredentials({ value: value, error: result });
+    const value = event.target.value;
+    const result = validator(value);
+    setCredentials({ value: value, response: result });
   };
 
-  const handleSubmit = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
-    let userError = validateUsername(user.value);
-    let emailError = validateEmail(email.value);
-    let passwordError = validatePassword(password.value);
+    const userResponse = validateUsername(user.value);
+    const emailResponse = validateEmail(email.value);
+    const passwordResponse = validatePassword(password.value);
 
     console.log("inside submit");
     if (
-      userError === false &&
-      emailError === false &&
-      passwordError === false
+      userResponse === "valid" &&
+      emailResponse === "valid" &&
+      passwordResponse === "valid"
     ) {
       try {
-        let res = await await addUser(userDetails);
+        const res = await addUser(userDetails);
 
         console.log(res);
         if (res != null) {
@@ -84,8 +84,8 @@ export const Register: React.FC<PropsRegister> = (props) => {
           <Email
             classes={classes}
             validateEmail={validateEmail}
-            onhandleChange={onhandleChange}
             setEmail={setEmail}
+            onhandleChange={onhandleChange}
             email={email}
           />
           <Password
@@ -98,7 +98,9 @@ export const Register: React.FC<PropsRegister> = (props) => {
 
           <Button
             className={classes.button}
-            onClick={(event: any) => handleSubmit(event)}
+            onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
+              handleSubmit(event)
+            }
             variant="outlined"
           >
             Register

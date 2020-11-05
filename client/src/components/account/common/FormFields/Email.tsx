@@ -4,22 +4,19 @@ import {
   Input,
   FormHelperText,
 } from "@material-ui/core";
+import { FieldObject } from "../../interface";
 import React from "react";
 
 interface PropsEmail {
-  classes: Record<any, string>;
-  validateEmail: (email: string) => string | boolean;
-  setEmail: React.Dispatch<
-    React.SetStateAction<{
-      value: string;
-      error: string;
-    }>
-  >;
-  onhandleChange: (validator: any, event: any, setCredentials: any) => void;
-  email: {
-    value: string;
-    error: string;
-  };
+  classes: Record<string, string>;
+  validateEmail: (email: string) => string;
+  setEmail: React.Dispatch<React.SetStateAction<FieldObject>>;
+  onhandleChange: (
+    validator: (value: string) => string,
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    setCredentials: React.Dispatch<React.SetStateAction<FieldObject>>
+  ) => void;
+  email: FieldObject;
 }
 
 export const Email: React.FC<PropsEmail> = (props: PropsEmail) => {
@@ -39,7 +36,7 @@ export const Email: React.FC<PropsEmail> = (props: PropsEmail) => {
         />
         <FormHelperText id="my-helper-text" className={props.classes.error}>
           {" "}
-          {props.email.error}
+          {props.email.response}
         </FormHelperText>
       </FormControl>
     </React.Fragment>

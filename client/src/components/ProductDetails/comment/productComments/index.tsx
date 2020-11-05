@@ -1,10 +1,15 @@
 import { Box, List, ListItem, Typography } from "@material-ui/core";
 import { useStyles } from "./style";
 import { StarRating } from "../../../home/starRating";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import IComment from "../../../../api/comment";
 
-export const ProductComments = (props: any) => {
+interface IProductComments {
+  comments: IComment[];
+}
+
+export const ProductComments: React.FC<IProductComments> = (props) => {
   const classes = useStyles();
 
   return (
@@ -14,7 +19,7 @@ export const ProductComments = (props: any) => {
       <hr></hr>
       <h3>{"What others has to say about this product"}</h3>
       <List className={classes.list}>
-        {props.comments.map((comment: any, index: number) => {
+        {props.comments.map((comment: IComment, index: number) => {
           return (
             <ListItem className={classes.listItem} key={index}>
               <Box className={classes.listItem__gridItem}>
@@ -26,7 +31,7 @@ export const ProductComments = (props: any) => {
               </Box>
               <Box className={classes.listItem__gridItem}></Box>
               <p className={classes.listItem__gridItem__date}>
-                {comment.dateOfCreation}
+                {comment.createdAt}
               </p>
               <Typography className={classes.listItem__gridItem__comment}>
                 {comment.comment}

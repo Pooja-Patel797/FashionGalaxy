@@ -1,33 +1,35 @@
 import React, { useContext } from "react";
 import { Paper, Menu, MenuItem, Box } from "@material-ui/core";
-import { StateContext } from "../../../stateprovider/stateprovider";
+import { StateContext } from "../../../reducers/reducer";
 import { useStyles } from "./style";
 import { Link } from "react-router-dom";
 import { getLocalStorage } from "../../../utils/localstorage";
 
 export interface PropsDropDown {
-  AnchorEL: React.FormEvent<HTMLInputElement>;
-  setAnchorEl: React.Dispatch<React.SetStateAction<null>>;
+  anchorEl: (EventTarget & HTMLElement) | null;
+  setAnchorEl: React.Dispatch<
+    React.SetStateAction<(EventTarget & HTMLElement) | null>
+  >;
 }
 
-export const DropDown = (props: any) => {
+export const DropDown: React.FC<PropsDropDown> = (props) => {
   const classes = useStyles();
-  const [state, dispatch] = useContext(StateContext);
+  const context = useContext(StateContext);
 
   const handleClose = () => {
     props.setAnchorEl(null);
   };
 
   const handleLogout = () => {
-    dispatch({
+    context.dispatch({
       type: "LOGOUT_USER",
-      user: null,
+      payload: { cart: { productId: "", size: " " }, isAuthenticated: false },
     });
     handleClose();
   };
 
   const getMenu = () => {
-    if (state.isAuthenticated) {
+    if (context.state.isAuthenticated) {
       console.log("in menu if");
       return (
         <Box>

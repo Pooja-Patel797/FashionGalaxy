@@ -15,9 +15,7 @@ import TYPES from "../constant/types";
 
 @controller("/carts")
 export class CartsController extends BaseHttpController {
-  constructor(
-    @inject(TYPES.CartsService) private CartsService: CartsService
-  ) {
+  constructor(@inject(TYPES.CartsService) private CartsService: CartsService) {
     super();
   }
 
@@ -33,7 +31,7 @@ export class CartsController extends BaseHttpController {
   }
 
   @httpGet("/:pid")
-  public async getComment(
+  public async getCart(
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
@@ -44,7 +42,7 @@ export class CartsController extends BaseHttpController {
   }
 
   @httpPost("/")
-  public async createComment(
+  public async createCart(
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
@@ -56,21 +54,18 @@ export class CartsController extends BaseHttpController {
   }
 
   @httpPut("/:id")
-  public async updateComment(
+  public async updateCart(
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
   ): Promise<JsonResult> {
-    const content = await this.CartsService.updateCart(
-      req.params.id,
-      req.body
-    );
+    const content = await this.CartsService.updateCart(req.params.id, req.body);
     const statusCode = 200;
     return this.json(content, statusCode);
   }
 
   @httpDelete("/:id")
-  public async deleteComment(
+  public async deleteCart(
     req: express.Request,
     res: express.Response,
     next: express.NextFunction

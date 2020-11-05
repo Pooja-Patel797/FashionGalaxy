@@ -1,13 +1,13 @@
 import React from "react";
 import { useStyles } from "./style";
 import Rating from "@material-ui/lab/Rating";
-import Product from "../../../common/productdetaillist";
+
 
 interface RatingProps {
-  rating: number;
+  rating: number|null;
 }
 
-export const StarRating = (props: RatingProps) => {
+export const StarRating:React.FC<RatingProps> = (props) => {
   const classes = useStyles();
 
   return (

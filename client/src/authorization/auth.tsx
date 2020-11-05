@@ -11,10 +11,11 @@ export interface IData {
   email: string;
 }
 
-export const authUser = async (props: ICredentials) => {
-  let response;
-  let data = await searchUser(props.email, props.password);
-  if (data === null) response = false;
+export const authUser = async (props: ICredentials): Promise<boolean> => {
+  console.log("start of authUser");
+  console.log(props);
+  const data = await searchUser(props.email, props.password);
+  if (data === null) return false;
   else {
     console.log("inside authuser");
     console.log(data);
@@ -26,8 +27,6 @@ export const authUser = async (props: ICredentials) => {
     });
 
     console.log(getLocalStorage("user"));
-    response = true;
+    return true;
   }
-
-  return response;
 };

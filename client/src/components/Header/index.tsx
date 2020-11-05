@@ -6,49 +6,52 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { useStyles } from "./style";
-import { StateContext } from "../../stateprovider/stateprovider";
+import { StateContext } from "../../reducers/reducer";
 import { DropDown } from "./dropDown";
 import { getLocalStorage } from "../../utils/localstorage";
-import { getCartById } from "../../api/cart";
+import { getCartById, ICartProduct } from "../../api/cart";
 
-export const Header = () => {
+export const Header: React.FC = () => {
   console.log("In header");
 
-  const [state, dispatch] = useContext(StateContext);
-  const [anchorEl, setAnchorEl] = React.useState();
-  const [cart, setCart] = useState([]);
+  const context = useContext(StateContext);
+  const [anchorEl, setAnchorEl] = React.useState<
+    (EventTarget & HTMLElement) | null
+  >(null);
+  const [cart, setCart] = useState<Array<ICartProduct>>([]);
 
   const classes = useStyles();
 
   useEffect(() => {
-    if (state.isAuthenticated) {
+    console.log("Hii");
+    console.log(context);
+    if (context.state.isAuthenticated) {
       const id = getLocalStorage("user").userId;
       (async () => {
-        let res = await getCartById(id);
+        const res = await getCartById(id);
         console.log("---->");
         console.log(res);
         setCart(res);
-        console.log("useEffect$$$$$$$44");
         console.log(cart);
       })();
     }
-  }, [dispatch, state]);
+  }, [context.dispatch, context.state]);
 
-  let getCartLength = () => {
-    if (state.isAuthenticated) return cart.length;
-    else return state.cart.length;
+  const getCartLength = () => {
+    if (context.state.isAuthenticated) return cart.length;
+    else return context.state.cart.length;
   };
 
   const getUserName = () => {
-    console.log(state.isAuthenticated);
-    if (state.isAuthenticated) {
+    console.log(context.state.isAuthenticated);
+    if (context.state.isAuthenticated) {
       return "hello " + getLocalStorage("user").username;
     } else {
       return "hello guest!!";
     }
   };
 
-  const handleClick = (event: any) => {
+  const handleClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     setAnchorEl(event.currentTarget);
     console.log("in click");
   };

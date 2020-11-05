@@ -3,12 +3,11 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import { App } from "./app";
-import { getInitialState, reducer } from "./reducers/reducer";
-import { StateProvider } from "./stateprovider/stateprovider";
+import { StateProvider, reducer, initialState } from "./reducers/reducer";
 
 ReactDOM.render(
   // React.createElement(RouteComponent),
-  <StateProvider initialState={getInitialState()} reducer={reducer}>
+  <StateProvider reducer={reducer} initialState={initialState}>
     <App />
   </StateProvider>,
   document.getElementById("root")

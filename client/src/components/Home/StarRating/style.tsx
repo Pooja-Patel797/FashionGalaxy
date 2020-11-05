@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 
-export const useStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles({
   iconbutton: {
     padding: "0px",
   },
@@ -9,4 +9,4 @@ export const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "row",
   },
-}));
+});

@@ -27,20 +27,20 @@ export const useStyles = makeStyles((theme) => ({
 }));
 interface ProductProps {
   size: string[];
-  setSize: React.Dispatch<React.SetStateAction<string>>;
+  // setSize: React.Dispatch<React.SetStateAction<string>>;
+  setSize: (data: string) => void;
 }
 
-export const ProductSizes = (props: ProductProps) => {
+export const ProductSizes: React.FC<ProductProps> = (props) => {
   const classes = useStyles();
-  const sizes: any = props.size;
+  const sizes: string[] = props.size;
   return (
     <Box className={classes.card_content_sizelist}>
       {sizes.map((size: string) => (
         <IconButton
           className={classes.IconButton}
           key={size}
-          onClick={(event: any) => {
-            console.log(event.target.value);
+          onClick={() => {
             props.setSize(size);
           }}
         >

@@ -12,13 +12,12 @@ const ProductSchema: Schema = new Schema(
     offers: { type: Schema.Types.String, required: true },
     rating: { type: Schema.Types.Number },
     size: { type: Schema.Types.Array },
-    imageUrl: [
-      {
-        cardImage: { type: Schema.Types.String },
-        gridImage: [{ type: Schema.Types.String }],
-        backdropImage: [{ type: Schema.Types.String }],
-      },
-    ],
+    imageUrl: {
+      cardImage: { type: Schema.Types.String },
+      gridImage: [{ type: Schema.Types.String }],
+      backdropImage: [{ type: Schema.Types.String }],
+    },
+
     category: { type: Schema.Types.String },
     comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
   },

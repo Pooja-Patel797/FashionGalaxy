@@ -8,7 +8,7 @@ export class CartsService {
   public getCarts = async (): Promise<ICart[]> => {
     console.log("ingetCarts");
     try {
-      return await Cart.find();
+      return await Cart.find().populate("products.productId");
     } catch (err) {
       throw err;
     }
@@ -16,26 +16,30 @@ export class CartsService {
 
   public getCart = async (uid: string): Promise<ICart | null> => {
     try {
-      return await Cart.findOne({ userId: uid });
+      return await Cart.findOne({ userId: uid }).populate("products.productId");
     } catch (err) {
       throw err;
     }
   };
 
-  
-
   public createOrUpdateCart = async (cart: any): Promise<ICart | null> => {
-    let query={userId:cart.userId};
-   let update = {products:[cart.products],
- };
-   let options = { upsert: true, new: true, setDefaultsOnInsert: true};
+    let query = { userId: cart.userId };
+    let update = { products: [cart.products] };
+    let options = { upsert: true, new: true, setDefaultsOnInsert: true };
     try {
-        return await Cart.findOneAndUpdate({ userId: cart.userId }, {$push:{products:[{productId:cart.products[0].productId,size:cart.products[0].size}]}}, { upsert:true,new: true });
-      } catch (err) {
-        throw err;
-      }
+      return await Cart.findOneAndUpdate(
+        { userId: cart.userId },
+        {
+          $push: {
+            products: cart.products,
+          },
+        },
+        { upsert: true, new: true }
+      );
+    } catch (err) {
+      throw err;
+    }
   };
-  
 
   public updateCart = async (id: string, cart: any): Promise<ICart | null> => {
     try {
