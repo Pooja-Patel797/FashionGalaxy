@@ -14,9 +14,9 @@ export const getInitialState = (): ICartProduct[] => {
 };
 
 export const CartReducer = (
-  state: ICartProduct[],
+  state: ICartProduct[] ,
   action: IActionsCart
-): ICartProduct[] | Promise<ICartProduct[]> => {
+): ICartProduct[] | Promise<ICartProduct[]>|any => {
   console.log(action);
 
   switch (action.type) {

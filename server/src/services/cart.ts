@@ -16,13 +16,16 @@ export class CartsService {
 
   public getCart = async (uid: string): Promise<ICart | null> => {
     try {
-      return await Cart.findOne({ userId: uid }).populate("products.productId");
+      return await Cart.findOne({ userId: uid });
     } catch (err) {
       throw err;
     }
   };
 
-  public createOrUpdateCart = async (cart: any): Promise<ICart | null> => {
+  public createOrUpdateCart = async (cart: {
+    userId: string;
+    products: [];
+  }): Promise<ICart | null> => {
     let query = { userId: cart.userId };
     let update = { products: [cart.products] };
     let options = { upsert: true, new: true, setDefaultsOnInsert: true };

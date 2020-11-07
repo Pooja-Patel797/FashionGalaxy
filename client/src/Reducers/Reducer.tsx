@@ -5,7 +5,7 @@ import { CartReducer, getInitialState } from "./cartreducer";
 import { ICartProduct } from "../api/cart";
 
 type state = {
-  cart: ICartProduct[];
+  cart: ICartProduct[] 
   isAuthenticated: boolean;
 };
 

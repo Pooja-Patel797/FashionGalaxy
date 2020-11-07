@@ -4,11 +4,13 @@ import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import { App } from "./app";
 import { StateProvider, reducer, initialState } from "./reducers/reducer";
+import { Loader } from "./Loader";
 
 ReactDOM.render(
   // React.createElement(RouteComponent),
   <StateProvider reducer={reducer} initialState={initialState}>
     <App />
+    <Loader />
   </StateProvider>,
   document.getElementById("root")
 );

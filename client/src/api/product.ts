@@ -36,3 +36,5 @@ export const getProduct = async (id: string): Promise<IProduct> => {
   console.log(result);
   return result.data[0];
 };
+
+

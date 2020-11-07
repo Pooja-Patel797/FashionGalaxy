@@ -1,4 +1,5 @@
 import axios from "axios";
+import IProduct from "./product"
 export interface ICartProduct {
   productId: string;
   size: string;
@@ -7,6 +8,8 @@ export interface ICart {
   userId: string;
   products: Array<ICartProduct>;
 }
+
+
 
 export const getCartById = async (id: string): Promise<ICartProduct[]> => {
   console.log("In getcart by id");

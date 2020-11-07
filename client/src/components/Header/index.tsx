@@ -18,7 +18,7 @@ export const Header: React.FC = () => {
   const [anchorEl, setAnchorEl] = React.useState<
     (EventTarget & HTMLElement) | null
   >(null);
-  const [cart, setCart] = useState<Array<ICartProduct>>([]);
+  const [cart, setCart] = useState<ICartProduct[]>([]);
 
   const classes = useStyles();
 

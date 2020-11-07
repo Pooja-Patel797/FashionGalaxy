@@ -5,3 +5,4 @@ export { IRole } from "./role";
 export { ISupplier } from "./supplier";
 export { IComment } from "./comment";
 export { ICart } from "./cart";
+export { ICartProduct } from "./cart";

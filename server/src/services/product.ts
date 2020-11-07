@@ -14,7 +14,7 @@ export class ProductsService {
     }
   };
  
-    public getProductsByIds = async (ids:any): Promise<IProduct[]> => {
+    public getProductsByIds = async (ids:string[]): Promise<IProduct[]> => {
       console.log("ingetProducts");
       try {
         return await Product.find({ "_id": { "$in": ids } });
