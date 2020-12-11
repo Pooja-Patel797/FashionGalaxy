@@ -1,5 +1,5 @@
-import { Username } from "./Username";
-import { Email } from "./Email";
-import { Password } from "./Password";
+import { Username } from "./username";
+import { Email } from "./email";
+import { Password } from "./password";
 
 export { Username, Email, Password };

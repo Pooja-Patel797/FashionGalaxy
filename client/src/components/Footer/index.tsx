@@ -1,10 +1,9 @@
-import Link from "@material-ui/core/Link";
+import {Link,CssBaseline,Typography} from "@material-ui/core";
 import React from "react";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Typography from "@material-ui/core/Typography";
+
 import { useStyles } from "./style";
 
-export const Footer = () => {
+export const Footer:React.FC = () => {
   const classes = useStyles();
   return (
     <React.Fragment>

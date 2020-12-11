@@ -12,13 +12,16 @@ export const useStyles = makeStyles({
     display: "grid",
     gridTemplateColumns: "repeat(2,minmax(150px,1fr))",
     gridColumnGap: "5px",
-    height: "auto",
+    height: "50vw",
   },
   productDetailsWrapper: {
     width: "100%",
     justifyContent: "center",
     marginLeft: "10%",
     marginTop: "6%",
+  },
+  imageWrapper__image: {
+    // height: "50%",
   },
   productDetailsBox: {
     width: "50%",

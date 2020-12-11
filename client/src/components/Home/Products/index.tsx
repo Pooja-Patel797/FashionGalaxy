@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   Typography,
   GridListTile,
@@ -11,59 +11,78 @@ import {
   CardActions,
   IconButton,
 } from "@material-ui/core";
-import Product, { ProductDetailList } from "../../../common/ProductDetailList";
 import { useStyles } from "./style";
-import { StarRating } from "../StarRating";
+import { StarRating } from "../starRating";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import { Link } from "react-router-dom";
-import { ProductSizes } from "../ProductSize";
-import { StateContext } from "../../../StateProvider/StateProvider";
-import { useHistory } from "react-router-dom";
+import { ProductSizes } from "../productSize";
+import { StateContext } from "../../../reducers/reducer";
+import IProduct, { getAllProducts } from "../../../api/product";
+import { AddToCart } from "../../../utils/availthecart";
+import { setLocalStorage } from "../../../utils/localstorage";
+import { ICartProduct } from "../../../api/cart";
 
-export const Products = (props: any) => {
+export const Products: React.FC = () => {
   const classes = useStyles();
-  const [state, dispatch] = useContext(StateContext);
-  const [size, setSize] = useState("");
-  const history = useHistory();
+  const context = useContext(StateContext);
+  const [cart, setCart] = useState<ICartProduct[]>([]);
+  const [product, setProduct] = useState<Array<IProduct>>([]);
+  let size = "";
 
-  const addToCart = (id: string) => {
-    if (state.user !== null) {
-      if (size === "") {
-        window.alert("please select size");
-      } else {
-        console.log("product size");
-        console.log(size);
-        dispatch({
-          type: "ADD_TO_CART",
-          item: { id: id, size: size },
-        });
-        setSize("");
-      }
+  useEffect(() => {
+    (async () => {
+      const data = await getAllProducts();
+      setProduct(data);
+    })();
+  }, []);
+
+  const setSize = (s: string) => {
+    size = s;
+  };
+  const addToCart = async (id: string) => {
+    if (size === "") {
+      window.alert("please select size");
     } else {
-      history.push("/SignIn");
+      const item = { productId: id, size: size };
+      setCart([...cart, item]);
+      context.dispatch({
+        type: "ADD_TO_CART",
+        payload: { cart: item },
+      });
+      console.log("Added to product");
+      if (context.state.isAuthenticated) {
+        console.log("Yes its me ;)");
+        AddToCart(item);
+      } else {
+        console.log("set localstoage");
+        setLocalStorage("fashiongalaxycart", [...cart, item]);
+      }
+      setSize("");
     }
+    console.log("THE END");
   };
 
   return (
     <GridList className={classes.gridList}>
-      {ProductDetailList.map((product: Product) => (
-        <GridListTile className={classes.gridListTile} key={product.pid}>
-          <Card className={classes.root} key={product.pid}>
-            <Link to={`/ProductDetail/${product.pid}`}>
+      {console.log("Repeating-->")}
+      {product.map((product: IProduct) => (
+        <GridListTile className={classes.gridListTile} key={product._id}>
+          <Card className={classes.root} key={product._id}>
+            <Link to={`/ProductDetail/${product._id}`}>
               <CardMedia
                 className={classes.media}
-                image={product.img_url.cardImage}
-                title={product.product_name}
+                image={product.imageUrl.cardImage}
+                title={product.title}
               />
             </Link>
             <CardHeader
-              title={product.product_brand}
-              subheader={product.product_name}
+              title={product.brand}
+              subheader={product.title}
               className={classes.card_header}
             />
             <CardContent className={classes.card_content}>
               <Box className={classes.card_content_box}>
-                <ProductSizes size={product.product_size} setSize={setSize} />
+                <ProductSizes size={product.size} setSize={setSize} />
                 <Typography className={classes.card_content_price}>
                   Price :{product.price}
                 </Typography>
@@ -71,13 +90,13 @@ export const Products = (props: any) => {
             </CardContent>
             <CardActions className={classes.card_action}>
               <IconButton
-                onClick={() => addToCart(product.pid)}
+                onClick={() => addToCart(product._id)}
                 aria-label="add to Cart"
-                key={product.pid}
+                key={product._id}
               >
                 <AddShoppingCartIcon />
               </IconButton>
-              <StarRating product={product} />
+              <StarRating rating={product.rating} />
             </CardActions>
           </Card>
         </GridListTile>

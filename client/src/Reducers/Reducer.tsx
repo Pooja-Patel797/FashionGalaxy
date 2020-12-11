@@ -1,54 +1,54 @@
-import { getLocalStorage, setLocalStorage } from "../utils/LocalStorage";
-import { deleteSession } from "../utils/SesssionStorage";
+import React, { createContext, useReducer, useEffect } from "react";
+import combineReducers from "react-combine-reducers";
+import { UserReducer } from "./userreducer";
+import { CartReducer, getInitialState } from "./cartreducer";
+import { ICartProduct } from "../api/cart";
 
-interface State {
-  cart: [];
-  user: null;
+type state = {
+  cart: ICartProduct[] 
+  isAuthenticated: boolean;
+};
+
+type Action = {
+  type: string;
+  payload: { cart?: ICartProduct; isAuthenticated?: boolean };
+};
+
+type StateReducer = (state: state, action: Action) => state;
+
+export const [reducer, initialState] = combineReducers<StateReducer>({
+  cart: [CartReducer, getInitialState()],
+  isAuthenticated: [UserReducer, false],
+});
+
+export const StateContext = createContext<{
+  state: state;
+  dispatch: React.Dispatch<Action>;
+}>({
+  state: initialState,
+  dispatch: () => null,
+});
+
+interface IProps {
+  reducer: StateReducer;
+  initialState: state;
+  children: React.ReactNode;
 }
 
-type Actions = {
-  type:
-    | "ADD_TO_CART"
-    | "REMOVE_FROM_CART"
-    | "EMPTY_CART"
-    | "LOGIN_USER"
-    | "LOGOUT_USER";
-  item: string;
-  user: { email: string; password: string };
-};
+export const StateProvider: React.FC<IProps> = ({
+  reducer,
+  initialState,
+  children,
+}: IProps) => {
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-export const initialState = {
-  cart: getLocalStorage("cart"),
-  user: null,
-};
-
-export const reducer = (state: State, action: Actions) => {
-  console.log(action);
-
-  switch (action.type) {
-    case "ADD_TO_CART": {
-      setLocalStorage("cart", [...state.cart, action.item]);
-      return {
-        ...state,
-        cart: [...state.cart, action.item],
-      };
-    }
-    case "REMOVE_FROM_CART":
-      return {};
-
-    case "EMPTY_CART":
-      return {};
-
-    case "LOGIN_USER":
-      console.log(state.user);
-      return { ...state, user: action.user };
-
-    case "LOGOUT_USER": {
-      deleteSession("user");
-      return { ...state, user: null };
-    }
-
-    default:
-      return state;
-  }
+  useEffect(() => {
+    console.log(state);
+  });
+  return (
+    <StateContext.Provider value={{ state, dispatch }}>
+      {console.log(state)}
+      {children}
+    </StateContext.Provider>
+  );
 };

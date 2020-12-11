@@ -1,24 +1,32 @@
 import { searchUser } from "../api/users";
-import { setSession } from "../utils/SesssionStorage";
+import { setLocalStorage, getLocalStorage } from "../utils/localstorage";
 
-export const authUser = async (email: string, password: string) => {
-  let response;
-  await searchUser(email, password).then((data: any) => {
-    if (data == null) response = false;
-    else {
-      console.log("inside authuser");
-      console.log(data.userId);
-      setSession("user", {
-        userId: data.userId,
-        emailId: email,
-        username: data.name,
-        isAuthenticated: true,
-      });
+export interface ICredentials {
+  email: string;
+  password: string;
+}
+export interface IData {
+  _id: string;
+  name: string;
+  email: string;
+}
 
-      console.log("isAutheticated");
-      response = true;
-    }
-  });
+export const authUser = async (props: ICredentials): Promise<boolean> => {
+  console.log("start of authUser");
+  console.log(props);
+  const data = await searchUser(props.email, props.password);
+  if (data === null) return false;
+  else {
+    console.log("inside authuser");
+    console.log(data);
 
-  return response;
+    setLocalStorage("user", {
+      userId: data._id,
+      emailId: props.email,
+      username: data.name,
+    });
+
+    console.log(getLocalStorage("user"));
+    return true;
+  }
 };

@@ -1,46 +1,71 @@
 import { CssBaseline, Button } from "@material-ui/core";
 import React, { useState, useContext, useEffect } from "react";
 import { useStyles } from "./style";
-import { validateEmail, validatePassword } from "../common/Validation";
+import { validateEmail, validatePassword } from "../common/validation";
 import { FormLayout } from "../index";
-import { Email, Password } from "../common/FormFields";
+import { Email, Password } from "../common/formfields";
 import { authUser } from "../../../authorization/auth";
-import { StateContext } from "../../../StateProvider/StateProvider";
-import { getSession } from "../../../utils/SesssionStorage";
+import { StateContext } from "../../../reducers/reducer";
+import { isCartExists } from "../../../utils/availthecart";
+import { FieldObject } from "../interface";
+import { History } from "history";
+import { deleteLocalStorage } from "../../../utils/localstorage";
+import { trackPromise } from "react-promise-tracker";
 
-export const SignIn = (props: any) => {
-  const [email, setEmail] = useState({ value: "", error: "" });
-  const [password, setPassword] = useState({ value: "", error: "" });
-  const [state, dispatch] = useContext(StateContext);
+interface ISignIn {
+  history: History;
+}
 
-  const onhandleChange = (validator: any, event: any, setCredentials: any) => {
-    let value = event.target.value;
-    let result = validator(value);
-    setCredentials({ value: value, error: result });
+export const SignIn: React.FC<ISignIn> = (props) => {
+  const fieldobject: FieldObject = { value: "", response: "" };
+  const [email, setEmail] = useState(fieldobject);
+  const [password, setPassword] = useState(fieldobject);
+  const context = useContext(StateContext);
+
+  const onhandleChange = (
+    validator: (value: string) => string,
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    setCredentials: React.Dispatch<React.SetStateAction<FieldObject>>
+  ) => {
+    const value = event.target.value;
+    const result = validator(value);
+    if (result !== "valid") setCredentials({ value: value, response: result });
+    else setCredentials({ value: value, response: "" });
   };
 
   const handleSubmit = async () => {
-    await authUser(email.value, password.value)
-      .then((res) => {
-        if (res) {
-          dispatch({
-            type: "LOGIN_USER",
-            user: getSession("user"),
-          });
-          props.history.push("/");
-        } else {
-          window.alert("Invalid credentials");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        window.alert("Something went wrong");
+    try {
+      const res = await authUser({
+        email: email.value,
+        password: password.value,
       });
+
+      if (res) {
+        context.dispatch({
+          type: "LOGIN_USER",
+          payload: { isAuthenticated: true },
+        });
+        if (await isCartExists()) {
+          context.dispatch({
+            type: "INITIALIZE_CART",
+            payload: {},
+          });
+        }
+        deleteLocalStorage("fashiongalaxycart");
+        props.history.push("/");
+      } else {
+        window.alert("Invalid credentials");
+      }
+    } catch (err) {
+      console.log(err);
+      window.alert(err);
+    }
   };
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    console.log("sigin");
   });
+
   const classes = useStyles();
   return (
     <FormLayout>
@@ -62,7 +87,7 @@ export const SignIn = (props: any) => {
           />
           <Button
             className={classes.button}
-            onClick={(event) => handleSubmit()}
+            onClick={() => handleSubmit()}
             variant="outlined"
           >
             Login

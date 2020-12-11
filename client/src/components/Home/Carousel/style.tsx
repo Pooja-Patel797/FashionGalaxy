@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 
-export const useStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles ({
   container: {
     width: "100%",
     marginTop: "-25px",
@@ -46,4 +46,4 @@ export const useStyles = makeStyles((theme) => ({
     float: "right",
     marginRight: "-20vh",
   },
-}));
+});

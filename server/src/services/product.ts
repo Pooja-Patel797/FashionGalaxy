@@ -1,32 +1,62 @@
-import { User, sequelize } from "../models/index";
-import { v4 as uuid } from "uuid";
-import { Product } from "../models/index";
+import { Product } from "../db/models/product";
+import { IProduct } from "../interfaces";
+import { injectable } from "inversify";
 
-export const addProduct = async (product: any) => {
-  const result = await Product.create({
-    productId: uuid(),
-    productName: product.productName,
-    productDesc: product.productDesc,
-    productBrand: product.productBrand,
-    productPrice: product.productPrice,
-    productQuantity: product.productQuantity,
-    discount: product.discount,
-    productOffers: product.productOffers,
-    productImagePath: product.productImagePath,
-    productRating: product.productRating,
-    productSize: product.productSize,
-  });
-  return result;
-};
 
-export const getAllProducts = async () => {
-  const result = await Product.findAll();
-  return result;
-};
+@injectable()
+export class ProductsService {
+  public getProducts = async (): Promise<IProduct[]> => {
+    console.log("ingetProducts");
+    try {
+      return await Product.find();
+    } catch (err) {
+      throw err;
+    }
+  };
+ 
+    public getProductsByIds = async (ids:string[]): Promise<IProduct[]> => {
+      console.log("ingetProducts");
+      try {
+        return await Product.find({ "_id": { "$in": ids } });
+      } catch (err) {
+        throw err;
+      }
+    };
 
-export const getProductById = async (user: any) => {
-  const result = await User.findOne({
-    where: { email: user.email, password: user.password },
-  });
-  return result;
-};
+  public getProduct = async (id: string): Promise<IProduct[]> => {
+    try {
+      return await Product.find({ _id: id });
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  public createProduct = async (product: any): Promise<IProduct> => {
+    try {
+      return await Product.create(product);
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  public updateProduct = async (
+    id: string,
+    product: any
+  ): Promise<IProduct | null> => {
+    try {
+      return await Product.findOneAndUpdate({ _id: id }, product, {
+        new: true,
+      });
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  public deleteProduct = async (id: string): Promise<IProduct | null> => {
+    try {
+      return await Product.findOneAndDelete({ _id: id });
+    } catch (err) {
+      throw err;
+    }
+  };
+}

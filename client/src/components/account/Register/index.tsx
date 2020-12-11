@@ -2,57 +2,67 @@ import { FormLayout } from "../index";
 import React, { useState } from "react";
 import { useStyles } from "./style";
 import { Button, CssBaseline } from "@material-ui/core";
-import { Username, Email, Password } from "../common/FormFields";
+import { Username, Email, Password } from "../common/formfields";
 import {
   validateEmail,
   validateUsername,
   validatePassword,
-} from "../common/Validation";
+} from "../common/validation";
 import { addUser } from "../../../api/users";
 import { History } from "history";
+import { FieldObject } from "../interface";
 
 interface PropsRegister {
   history: History;
 }
 
 export const Register: React.FC<PropsRegister> = (props) => {
-  const [user, setUser] = useState({ value: "", error: " " });
-  const [email, setEmail] = useState({ value: "", error: " " });
-  const [password, setPassword] = useState({ value: "", error: " " });
-
-  const onhandleChange = (validator: any, event: any, setCredentials: any) => {
-    let value = event.target.value;
-    let result = validator(value);
-    setCredentials({ value: value, error: result });
+  const fieldObject: FieldObject = { value: "", response: "" };
+  const [user, setUser] = useState(fieldObject);
+  const [email, setEmail] = useState(fieldObject);
+  const [password, setPassword] = useState(fieldObject);
+  const userDetails = {
+    name: user.value,
+    email: email.value,
+    password: password.value,
+    isStatus: "active",
+    roleId: "user",
   };
 
-  const handleSubmit = async (event: any) => {
-    event.preventDefault();
-    let userError = validateUsername(user.value);
-    let emailError = validateUsername(email.value);
-    let passwordError = validateUsername(password.value);
+  const onhandleChange = (
+    validator: (value: string) => string,
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    setCredentials: React.Dispatch<React.SetStateAction<FieldObject>>
+  ) => {
+    const value = event.target.value;
+    const result = validator(value);
+    setCredentials({ value: value, response: result });
+  };
 
-    const userDetails = {
-      name: user.value,
-      email: email.value,
-      password: password.value,
-    };
+  const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.preventDefault();
+    const userResponse = validateUsername(user.value);
+    const emailResponse = validateEmail(email.value);
+    const passwordResponse = validatePassword(password.value);
+
     console.log("inside submit");
     if (
-      userError === false &&
-      emailError === false &&
-      passwordError === false
+      userResponse === "valid" &&
+      emailResponse === "valid" &&
+      passwordResponse === "valid"
     ) {
-      await addUser(userDetails)
-        .then((res) => {
-          if (res) {
-            props.history.push("/SignIn");
-          }
-          if (res) {
-            window.alert("Email already exists!!!");
-          }
-        })
-        .catch(() => window.alert("Something went wrong !!!"));
+      try {
+        const res = await addUser(userDetails);
+
+        console.log(res);
+        if (res != null) {
+          props.history.push("/SignIn");
+        } else {
+          window.alert("Email already exists!!!");
+        }
+      } catch {
+        window.alert("Something went wrong !!!");
+      }
     } else {
       console.log("invalid");
       window.alert("Invalid credentials.");
@@ -74,8 +84,8 @@ export const Register: React.FC<PropsRegister> = (props) => {
           <Email
             classes={classes}
             validateEmail={validateEmail}
-            onhandleChange={onhandleChange}
             setEmail={setEmail}
+            onhandleChange={onhandleChange}
             email={email}
           />
           <Password
@@ -88,7 +98,9 @@ export const Register: React.FC<PropsRegister> = (props) => {
 
           <Button
             className={classes.button}
-            onClick={(event: any) => handleSubmit(event)}
+            onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
+              handleSubmit(event)
+            }
             variant="outlined"
           >
             Register

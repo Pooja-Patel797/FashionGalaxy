@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { CssBaseline, AppBar, Box, InputBase } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import SearchIcon from "@material-ui/icons/Search";
@@ -6,28 +6,52 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { useStyles } from "./style";
-import { StateContext } from "../../StateProvider/StateProvider";
-import { DropDown } from "./DropDown";
-export const Header = () => {
+import { StateContext } from "../../reducers/reducer";
+import { DropDown } from "./dropDown";
+import { getLocalStorage } from "../../utils/localstorage";
+import { getCartById, ICartProduct } from "../../api/cart";
+
+export const Header: React.FC = () => {
   console.log("In header");
 
-  const [state, dispatch] = useContext(StateContext);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const context = useContext(StateContext);
+  const [anchorEl, setAnchorEl] = React.useState<
+    (EventTarget & HTMLElement) | null
+  >(null);
+  const [cart, setCart] = useState<ICartProduct[]>([]);
 
   const classes = useStyles();
 
-  const getCartlength = () => {
-    return state.cart.length;
+  useEffect(() => {
+    console.log("Hii");
+    console.log(context);
+    if (context.state.isAuthenticated) {
+      const id = getLocalStorage("user").userId;
+      (async () => {
+        const res = await getCartById(id);
+        console.log("---->");
+        console.log(res);
+        setCart(res);
+        console.log(cart);
+      })();
+    }
+  }, [context.dispatch, context.state]);
+
+  const getCartLength = () => {
+    if (context.state.isAuthenticated) return cart.length;
+    else return context.state.cart.length;
   };
+
   const getUserName = () => {
-    if (state.user != null) {
-      return "hello " + state.user.username;
+    console.log(context.state.isAuthenticated);
+    if (context.state.isAuthenticated) {
+      return "hello " + getLocalStorage("user").username;
     } else {
       return "hello guest!!";
     }
   };
 
-  const handleClick = (event: any) => {
+  const handleClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     setAnchorEl(event.currentTarget);
     console.log("in click");
   };
@@ -90,7 +114,7 @@ export const Header = () => {
             <Link className={classes.link} to="/Cart">
               <Box className={classes.cart}>
                 <Box className={classes.notificationIcon}>
-                  <strong>{getCartlength()}</strong>
+                  <strong>{getCartLength()}</strong>
                 </Box>
                 <ShoppingCartIcon
                   className={classes.carticon}

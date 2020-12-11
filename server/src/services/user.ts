@@ -1,75 +1,69 @@
-import { User, sequelize } from "../models/index";
-import { v4 as uuid } from "uuid";
-import { redis_client } from "../config/server";
-import { Op } from "sequelize";
+import { User } from "../db/models/user";
+import { IUser } from "../interfaces";
+import { injectable } from "inversify";
+import { Error, default as mongoose } from "mongoose";
 
-export const addUser = async (user: any) => {
-  console.log("in service");
-  console.log(user.name);
-  let queryresponse;
-  const result = await getUserByEmail(user.email);
-  if (result) {
-    queryresponse = User.create({
-      userId: uuid(),
-      name: user.name,
-      email: user.email,
-      password: user.password,
-      isStatus: "active",
-      roleRoleId: 2,
-    });
-    queryresponse = true;
-  } else {
-    queryresponse = false;
+@injectable()
+export class UsersService {
+  public getUsers = async (): Promise<IUser[]> => {
+    console.log("ingetUsers");
+    try {
+      return await User.find();
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  public getUser = async (id: string): Promise<IUser | null> => {
+    try {
+      return await User.findOne({ _id: id });
+    } catch (err) {
+      throw err;
+    }
+  };
+  public getUserByEmail = async (email: string): Promise<IUser | null> => {
+    console.log("Hiii");
+    try {
+      return await User.findOne({ email: email });
+    } catch (err) {
+      throw err;
+    }
+  };
+  public getUserByEmailAndPassword = async (
+    email: string,
+    password: string
+  ): Promise<IUser | null> => {
+    try {
+      return await User.findOne({ email: email, password: password });
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  public createUserIfNotExists = async (user: any): Promise<IUser | null> => {
+    try {
+      let data = await this.getUserByEmail(user.email);
+      if (data === null) {
+        return await User.create(user);
+      } else return null;
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  public updateUser = async (id: string, user: any): Promise<IUser | null> => {
+    try {
+      return await User.findOneAndUpdate({ _id: id }, user, { new: true });
+    } catch (err) {
+      return err;
+    }
+  };
+
+  public async deleteUser(id: string): Promise<IUser | null> {
+    try {
+      return await User.findOneAndDelete({ _id: id });
+    } catch (err) {
+      return err;
+    }
   }
-
-  return queryresponse;
-};
-
-export const getAllUser = async (id: any) => {
-  const result = await User.findAll();
-  if (result != null) redis_client.setex(id, 3600, JSON.stringify(result));
-  return result;
-};
-
-export const getUserById = async (id: any) => {
-  const result = await User.findOne({
-    where: { userId: id },
-  });
-  if (result != null) redis_client.setex(id, 3600, JSON.stringify(result));
-  return result;
-};
-export const getUserByEmail = async (email: any) => {
-  const result = await User.findOne({
-    where: { email: email },
-  });
-  console.log("in email passs");
-  console.log(result);
-  if (result != null) return "false";
-  return true;
-};
-
-export const getUserByEmailPassword = async (email: any, password: any) => {
-  console.log(password);
-  const res = await User.findOne({
-    attributes: ["userId", "name"],
-    where: {
-      [Op.and]: [{ email: email }, { password: password }],
-    },
-  });
-  console.log(res);
-  return res;
-};
-
-export const updateUser = async (id: string, user: any) => {
-  const result = await User.update(
-    { roleRoleId: user.id },
-    { where: { userId: id } }
-  );
-
-  return result;
-};
-
-export const deleteUser = async (id: string) => {
-  const result = await User.destroy({ where: { userId: id } });
-  return result;
-};
+}

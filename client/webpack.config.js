@@ -1,3 +1,3 @@
-resolve: {
-  extensions: [".ts", ".tsx", ".js", ".jsx"];
-}
+// resolve: {
+//   extensions: [".ts", ".tsx", ".js", ".jsx"];
+// }

@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
 import { CssBaseline, Container, Box, Paper } from "@material-ui/core";
 import { useStyles } from "./style";
-import { Products } from "./Products";
-import { Carousel } from "./Carousel";
-import { Brands } from "./Brands";
+import { Products } from "./products";
+import { Carousel } from "./carousel";
+import { Brands } from "./brands";
 
-export const Home = () => {
+export const Home:React.FC = () => {
   const classes = useStyles();
   useEffect(() => {
+    console.log("In home");
     window.scrollTo(0, 0);
   });
 
